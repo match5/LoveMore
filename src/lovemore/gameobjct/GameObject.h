@@ -71,7 +71,7 @@ namespace lovemore {
 		
 		bool getChildrenZOrderDirty() { return _zOrderDirty; }
 		
-		static void registerClassToLua(luabridge::Namespace& ns);
+		static void registerClassToLua(lua_State* L);
 		
 	protected:
 		

@@ -69,9 +69,12 @@ void LuaComponent::draw(GLGraphics* /*g*/)
 	}
 }
 
-void LuaComponent::registerClassToLua(luabridge::Namespace& ns)
+void LuaComponent::registerClassToLua(lua_State* L)
 {
-	ns.deriveClass<LuaComponent, Component>("LuaComponent")
+	
+	luabridge::getGlobalNamespace(L)
+	.deriveClass<LuaComponent, Component>("LuaComponent")
+	.addStaticFunction("castForm", &Component::castFrom<LuaComponent>)
 	.addProperty("script", &LuaComponent::getScript)
 	.endClass();
 }

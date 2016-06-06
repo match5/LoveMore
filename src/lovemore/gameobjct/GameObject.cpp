@@ -194,9 +194,10 @@ void GameObject::setZOreder(int zOrder)
 	}
 }
 
-void GameObject::registerClassToLua(luabridge::Namespace& ns)
+void GameObject::registerClassToLua(lua_State* L)
 {
-	ns.beginClass<GameObject>("GameObject")
+	luabridge::getGlobalNamespace(L)
+	.beginClass<GameObject>("GameObject")
 	.addFunction("addComponent", &GameObject::addComponent)
 	.addFunction("getComponent", &GameObject::getComponent)
 	.addFunction("addChild", &GameObject::addChild)

@@ -56,9 +56,11 @@ void SpriteRenderer::draw(GLGraphics* /*g*/)
 	}
 }
 
-void SpriteRenderer::registerClassToLua(luabridge::Namespace& ns)
+void SpriteRenderer::registerClassToLua(lua_State* L)
 {
-	ns.deriveClass<SpriteRenderer, Component>("SpriteRenderer")
+	luabridge::getGlobalNamespace(L)
+	.deriveClass<SpriteRenderer, Component>("SpriteRenderer")
+	.addStaticFunction("castForm", &Component::castFrom<SpriteRenderer>)
 	.addCFunction("setTexture", &SpriteRenderer::lua_setTexture)
 	.addCFunction("setTextureAndQuad", &SpriteRenderer::lua_setTextureAndQuad)
 	.addFunction("setAnchor", &SpriteRenderer::setAnchor)

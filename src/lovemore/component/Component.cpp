@@ -53,9 +53,10 @@ void Component::draw(GLGraphics* /*g*/)
 {
 }
 
-void Component::registerClassToLua(luabridge::Namespace& ns)
+void Component::registerClassToLua(lua_State* L)
 {
-	ns.beginClass<Component>("Component")
+	luabridge::getGlobalNamespace(L)
+	.beginClass<Component>("Component")
 	.addProperty("owner", &Component::getOwner)
 	.addProperty("drawOrder", &Component::getDrawOrder, &Component::setDrawOrder)
 	.addData("isEnabled", &Component::_enabled)

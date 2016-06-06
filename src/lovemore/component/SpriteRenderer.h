@@ -41,7 +41,7 @@ namespace lovemore {
 		
 		int lua_getAnchor(lua_State* L);
 		
-		static void registerClassToLua(luabridge::Namespace& ns);
+		static void registerClassToLua(lua_State* L);
 		
 	protected:
 		

@@ -35,7 +35,7 @@ namespace lovemore {
 		
 		virtual const char* getName() const override { return _name.c_str(); }
 		
-		static void registerClassToLua(luabridge::Namespace& ns);
+		static void registerClassToLua(lua_State* L);
 		
 	protected:
 		

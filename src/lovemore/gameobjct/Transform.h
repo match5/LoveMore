@@ -41,7 +41,7 @@ namespace lovemore {
 		
 		void apply();
 		
-		static void registerClassToLua(luabridge::Namespace& ns);
+		static void registerClassToLua(lua_State* L);
 		
 	protected:
 		

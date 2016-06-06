@@ -39,9 +39,10 @@ void Transform::apply()
 	}
 }
 
-void Transform::registerClassToLua(luabridge::Namespace& ns)
+void Transform::registerClassToLua(lua_State* L)
 {
-	ns.beginClass<Transform>("Transform")
+	luabridge::getGlobalNamespace(L)
+	.beginClass<Transform>("Transform")
 	.addCFunction("getPosition", &Transform::lua_getPosition)
 	.addFunction("setPosition", &Transform::setPosition)
 	.addFunction("translate", &Transform::translate)

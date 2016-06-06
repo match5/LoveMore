@@ -56,7 +56,13 @@ namespace lovemore {
 		
 		virtual const char* getName() const { return ""; };
 		
-		static void registerClassToLua(luabridge::Namespace& ns);
+		template<class T_COM>
+		static T_COM* castFrom(Component* com)
+		{
+			return dynamic_cast<T_COM*>(com);
+		}
+		
+		static void registerClassToLua(lua_State* L);
 		
 	protected:
 		

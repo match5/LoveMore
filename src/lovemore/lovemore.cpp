@@ -109,9 +109,8 @@ int luaopen_lovemore(lua_State *L)
 {
 	_L = L;
 	
-	auto ns = luabridge::getGlobalNamespace(L)
+	luabridge::getGlobalNamespace(L)
 		.beginNamespace("lovemore")
-			.addCFunction("open", luaopen_lovemore)
 			.addCFunction("newGameObject", lovemore_newGameObject)
 			.addCFunction("clearGameObjects", lovemore_clearGameObjects)
 			.addCFunction("update", lovemore_update)
@@ -122,12 +121,12 @@ int luaopen_lovemore(lua_State *L)
 			.addCFunction("newSpineAnimator", lovemore_newSpineAnimator)
 		.endNamespace();
 	
-	GameObject::registerClassToLua(ns);
-	Transform::registerClassToLua(ns);
-	Component::registerClassToLua(ns);
-	LuaComponent::registerClassToLua(ns);
-	SpriteRenderer::registerClassToLua(ns);
-	SpineAnimator::registerClassToLua(ns);
+	GameObject::registerClassToLua(L);
+	Transform::registerClassToLua(L);
+	Component::registerClassToLua(L);
+	LuaComponent::registerClassToLua(L);
+	SpriteRenderer::registerClassToLua(L);
+	SpineAnimator::registerClassToLua(L);
 	
 	root = new GameObject;
 	

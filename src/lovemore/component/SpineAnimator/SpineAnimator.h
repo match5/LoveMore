@@ -38,7 +38,7 @@ namespace lovemore {
 		
 		void addAnimation (int trackIndex, const char* name, bool loop, float delay);
 		
-		static void registerClassToLua(luabridge::Namespace& ns);
+		static void registerClassToLua(lua_State* L);
 		
 	protected:
 		

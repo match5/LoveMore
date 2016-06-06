@@ -211,9 +211,11 @@ void SpineAnimator::addAnimation (int trackIndex, const char* name, bool loop, f
 	spAnimationState_addAnimation(_state, trackIndex, animation, loop, delay);
 }
 
-void SpineAnimator::registerClassToLua(luabridge::Namespace& ns)
+void SpineAnimator::registerClassToLua(lua_State* L)
 {
-	ns.deriveClass<SpineAnimator, Component>("SpineAnimator")
+	luabridge::getGlobalNamespace(L)
+	.deriveClass<SpineAnimator, Component>("SpineAnimator")
+	.addStaticFunction("castFrom", &Component::castFrom<SpineAnimator>)
 	.addData("speedScale", &SpineAnimator::_speedScale)
 	.addFunction("setMix", &SpineAnimator::setMix)
 	.addFunction("setAnimation", &SpineAnimator::setAnimation)
