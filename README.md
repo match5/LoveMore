@@ -29,4 +29,5 @@ Native extensions for LÖVE
 	spine = lovemore.newGameObject();
 	spine.transform:setPosition(x, y);
 	spine.transform.scale = 0.25;
-	spine:addComponent(lovemore.newSpineAnimator("spine/spineboy.json", "spine/spineboy.atlas"));	SpineAnimator.castFrom(spine:getComponent("SpineAnimator")):setAnimation(0, "run", true);
+	spine:addComponent(lovemore.newSpineAnimator("spine/spineboy.json", "spine/spineboy.atlas"));
+	SpineAnimator.castFrom(spine:getComponent("SpineAnimator")):setAnimation(0, "run", true);
