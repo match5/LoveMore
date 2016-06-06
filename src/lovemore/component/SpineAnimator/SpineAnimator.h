@@ -22,9 +22,7 @@ namespace lovemore {
 	{
 	public:
 		
-		static SpineAnimator* create(const char* skeletonDataFile, const char* atlasFile);
-		
-		SpineAnimator(spSkeletonData* skeletonData);
+		SpineAnimator(const char* skeletonDataFile, const char* atlasFile);
 		
 		virtual ~SpineAnimator() override;
 		
@@ -34,13 +32,19 @@ namespace lovemore {
 		
 		virtual const char* getName() const override { return "SpineAnimator"; }
 		
+		void setMix (const char* fromAnimation, const char* toAnimation, float duration);
+		
+		void setAnimation(int trackIndex, const char* name, bool loop);
+		
+		void addAnimation (int trackIndex, const char* name, bool loop, float delay);
+		
 		static void registerClassToLua(luabridge::Namespace& ns);
 		
 	protected:
 		
-		spSkeleton*			_skeleton;
-		
-		spAnimationState*	_state;
+		spSkeleton*			_skeleton = nullptr;
+		spAtlas*			_atlas = nullptr;
+		spAnimationState*	_state = nullptr;
 		
 		float				_speedScale = 1;
 	};

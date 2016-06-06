@@ -20,6 +20,7 @@ extern "C" {
 #include "component/Component.h"
 #include "component/LuaComponent.h"
 #include "component/SpriteRenderer.h"
+#include "component/SpineAnimator/SpineAnimator.h"
 
 // C++
 #include <string>
@@ -76,6 +77,15 @@ int lovemore_newSprite(lua_State* L)
 	return 1;
 }
 
+int lovemore_newSpineAnimator(lua_State* L)
+{
+	const char* skeletonDataFile =  lua_tostring(L, 1);
+	const char* atlasFile =  lua_tostring(L, 2);
+	SpineAnimator* spine = new SpineAnimator(skeletonDataFile, atlasFile);
+	luabridge::push(L, spine);
+	return 1;
+}
+
 int lovemore_clearGameObjects(lua_State *)
 {
 	root->removeAllChildren();
@@ -109,6 +119,7 @@ int luaopen_lovemore(lua_State *L)
 			.addCFunction("newComponent", lovemore_newComponent)
 			.addCFunction("newSpriteRenderer", lovemore_newSpriteRenderer)
 			.addCFunction("newSprite", lovemore_newSprite)
+			.addCFunction("newSpineAnimator", lovemore_newSpineAnimator)
 		.endNamespace();
 	
 	GameObject::registerClassToLua(ns);
@@ -116,6 +127,7 @@ int luaopen_lovemore(lua_State *L)
 	Component::registerClassToLua(ns);
 	LuaComponent::registerClassToLua(ns);
 	SpriteRenderer::registerClassToLua(ns);
+	SpineAnimator::registerClassToLua(ns);
 	
 	root = new GameObject;
 	

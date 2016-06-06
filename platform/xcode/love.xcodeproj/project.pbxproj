@@ -168,6 +168,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		053C11311D0515DA0081C098 /* scope_guard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scope_guard.h; sourceTree = "<group>"; };
 		05ACCB5E1D01157C00C3C931 /* Component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Component.cpp; sourceTree = "<group>"; };
 		05ACCB5F1D01157C00C3C931 /* Component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Component.h; sourceTree = "<group>"; };
 		05ACCB601D01157C00C3C931 /* LuaComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LuaComponent.cpp; sourceTree = "<group>"; };
@@ -324,10 +325,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		053C11301D0515990081C098 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				053C11311D0515DA0081C098 /* scope_guard.h */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
 		05ACCB5C1D01157C00C3C931 /* lovemore */ = {
 			isa = PBXGroup;
 			children = (
 				05ACCB6B1D01157C00C3C931 /* LuaBridge */,
+				053C11301D0515990081C098 /* common */,
 				05ACCB641D01157C00C3C931 /* gameobjct */,
 				05ACCB5D1D01157C00C3C931 /* component */,
 				05ACCB691D01157C00C3C931 /* lovemore.cpp */,
