@@ -33,9 +33,9 @@ void Transform::apply()
 	{
 		g->rotate(LOVE_TORAD(_rotation));
 	}
-	if (-0.001 > _scale || _scale > 0.001 )
+	if (-0.001 > _scaleX || _scaleX > 0.001 || -0.001 > _scaleY || _scaleY > 0.001 )
 	{
-		g->scale(_scale, _scale);
+		g->scale(_scaleX, _scaleY);
 	}
 }
 
@@ -51,6 +51,7 @@ void Transform::registerClassToLua(lua_State* L)
 	.addData("x", &Transform::_x)
 	.addData("y", &Transform::_y)
 	.addData("rotation", &Transform::_rotation)
-	.addData("scale", &Transform::_scale)
+	.addData("scaleX", &Transform::_scaleX)
+	.addData("scaleY", &Transform::_scaleY)
 	.endClass();
 }

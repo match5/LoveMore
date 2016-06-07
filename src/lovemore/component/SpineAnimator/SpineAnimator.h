@@ -61,6 +61,9 @@ namespace lovemore {
 		void				flush();
 		
 		float				_speedScale = 1;
+		
+		bool				_flipX = false;
+		bool				_flipY = false;
 	};
 }
 

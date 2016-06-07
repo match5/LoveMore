@@ -87,8 +87,10 @@ void SpineAnimator::update(float dt)
 	spSkeleton_updateWorldTransform(_skeleton);
 }
 
-void SpineAnimator::draw(GLGraphics* /*g*/)
+void SpineAnimator::draw(GLGraphics* g)
 {
+	g->push();
+	g->scale(_flipX? -1 : 1,_flipY ? -1 : 1);
 	spSlot* slot = nullptr;
 	for (int i = 0, n = _skeleton->slotsCount; i < n; ++i)
 	{
@@ -152,6 +154,7 @@ void SpineAnimator::draw(GLGraphics* /*g*/)
 		}
 	}
 	flush();
+	g->pop();
 }
 
 void SpineAnimator::setMix (const char* fromAnimation, const char* toAnimation, float duration)
@@ -220,6 +223,8 @@ void SpineAnimator::registerClassToLua(lua_State* L)
 	.deriveClass<SpineAnimator, Component>("SpineAnimator")
 	.addStaticFunction("castFrom", &Component::castFrom<SpineAnimator>)
 	.addData("speedScale", &SpineAnimator::_speedScale)
+	.addData("flipX", &SpineAnimator::_flipX)
+	.addData("flipY", &SpineAnimator::_flipY)
 	.addFunction("setMix", &SpineAnimator::setMix)
 	.addFunction("setAnimation", &SpineAnimator::setAnimation)
 	.addFunction("addAnimation", &SpineAnimator::addAnimation)

@@ -25,15 +25,21 @@ namespace lovemore {
 		
 		void setPosition(float x, float y) { _x = x; _y = y; }
 		
-		float getRotation() { return _rotation; }
-		
 		int lua_getPosition(lua_State* L);
+		
+		float getRotation() { return _rotation; }
 		
 		void setRotation(float r) { _rotation = r; }
 		
-		float getScale() {return _scale; }
+		float getScaleX() {return _scaleX; }
 		
-		void setScale(float s) { _scale = s; }
+		float getScaleY() {return _scaleY; }
+		
+		void setScaleX(float s) { _scaleX = s; }
+		
+		void setScaleY(float s) { _scaleY = s; }
+		
+		void setScale(float s) { _scaleX = s; _scaleY = s; }
 		
 		void translate(float x, float y) { _x += x; _y += y; }
 		
@@ -48,7 +54,8 @@ namespace lovemore {
 		float	_x = 0;
 		float	_y = 0;
 		float	_rotation = 0;
-		float	_scale = 1;
+		float	_scaleX = 1;
+		float	_scaleY = 1;
 	};
 }
 

@@ -46,12 +46,13 @@ namespace lovemore {
 	protected:
 		
 		StrongRef<graphics::Texture>	_texture;
-		
 		StrongRef<graphics::Quad>		_quad;
 		
 		float _anchorX = 0.5;
-		
 		float _anchorY = 0.5;
+		
+		bool _flipX = false;
+		bool _flipY = false;
 	};
 }
 

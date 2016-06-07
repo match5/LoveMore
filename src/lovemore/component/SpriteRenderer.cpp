@@ -40,10 +40,12 @@ int SpriteRenderer::lua_getAnchor(lua_State* L)
 	return 2;
 }
 
-void SpriteRenderer::draw(GLGraphics* /*g*/)
+void SpriteRenderer::draw(GLGraphics* g)
 {
 	if (_texture)
 	{
+		g->push();
+		g->scale(_flipX? -1 : 1,_flipY ? -1 : 1);
 		if (_quad)
 		{
 			Quad::Viewport vp = _quad->getViewport();
@@ -53,6 +55,7 @@ void SpriteRenderer::draw(GLGraphics* /*g*/)
 		{
 			_texture->draw(0, 0, 0, 1, 1, _anchorX * _texture->getWidth(), _anchorY * _texture->getHeight(), 0, 0);
 		}
+		g->pop();
 	}
 }
 
@@ -65,5 +68,7 @@ void SpriteRenderer::registerClassToLua(lua_State* L)
 	.addCFunction("setTextureAndQuad", &SpriteRenderer::lua_setTextureAndQuad)
 	.addFunction("setAnchor", &SpriteRenderer::setAnchor)
 	.addCFunction("getAnchor", &SpriteRenderer::lua_getAnchor)
+	.addData("flipX", &SpriteRenderer::_flipX)
+	.addData("flipY", &SpriteRenderer::_flipY)
 	.endClass();
 }
