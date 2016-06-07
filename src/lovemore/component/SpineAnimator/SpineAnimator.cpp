@@ -1,4 +1,5 @@
 
+//LoveMore
 #include "lovemore.h"
 #include "SpineAnimator.h"
 #include "scope_guard.h"
@@ -22,6 +23,7 @@ void _spAtlasPage_createTexture (spAtlasPage* self, const char* path)
 	lua_State* L = lovemore_getLuaState();
 	int top = lua_gettop(L);
 	
+	//call love.graphics.newImage()
 	lua_getglobal(L, "love");
 	lua_getfield(L, -1, "graphics");
 	lua_getfield(L, -1, "newImage");
@@ -53,18 +55,7 @@ char* _spUtil_readFile (const char* path, int* length)
 	return data;
 }
 
-template <typename T_Attachment> Texture* getTexture(T_Attachment* attachment)
-{
-	return (Texture*)((spAtlasRegion*)attachment->rendererObject)->page->rendererObject;
-}
-
-template <int n>
-void flipVerticesY(float* v)
-{
-	for (int i = 0; i < n; ++i) {
-		v[i * 2 + 1] = - v[i * 2 + 1];
-	}
-}
+float* SpineAnimator::_worldVertices = new float[K_MAX_VERTICES_NUM * 2];
 
 SpineAnimator::SpineAnimator(const char* skeletonDataFile, const char* atlasFile)
 {
@@ -99,8 +90,6 @@ void SpineAnimator::update(float dt)
 void SpineAnimator::draw(GLGraphics* /*g*/)
 {
 	spSlot* slot = nullptr;
-	Vertex vertices[4];
-	float worldVertices[8];
 	for (int i = 0, n = _skeleton->slotsCount; i < n; ++i)
 	{
 		slot = _skeleton->drawOrder[i];
@@ -112,71 +101,49 @@ void SpineAnimator::draw(GLGraphics* /*g*/)
 		{
 			case SP_ATTACHMENT_REGION:
 			{
-				spRegionAttachment *attachment = (spRegionAttachment*)(slot->attachment);
-				spRegionAttachment_computeWorldVertices(attachment, slot->bone, worldVertices);
-				flipVerticesY<4>(worldVertices);
-				Texture* t = getTexture(attachment);
+				spRegionAttachment *region = (spRegionAttachment*)slot->attachment;
+				Texture* t = (Texture*)((spAtlasRegion*)region->rendererObject)->page->rendererObject;
+				spRegionAttachment_computeWorldVertices(region, slot->bone, _worldVertices);
 				
-				GLbyte r = static_cast<GLbyte>(_skeleton->r * slot->r * 255);
-				GLbyte g = static_cast<GLbyte>(_skeleton->g * slot->g * 255);
-				GLbyte b = static_cast<GLbyte>(_skeleton->b * slot->b * 255);
-				GLbyte a = static_cast<GLbyte>(_skeleton->a * slot->a * 255);
+				addVertices(t, _worldVertices,region->uvs,  3);				//0 1 2
+				addVertices(t, _worldVertices,region->uvs,  1);				//0
+				addVertices(t, _worldVertices + 4,region->uvs + 4,  2);		//2 3
 				
-				vertices[0].r = r;
-				vertices[0].g = g;
-				vertices[0].b = b;
-				vertices[0].a = a;
-				vertices[0].x = worldVertices[SP_VERTEX_X2];
-				vertices[0].y = worldVertices[SP_VERTEX_Y2];
-				vertices[0].s = attachment->uvs[SP_VERTEX_X2];
-				vertices[0].t = attachment->uvs[SP_VERTEX_Y2];
-				
-				vertices[1].r = r;
-				vertices[1].g = g;
-				vertices[1].b = b;
-				vertices[1].a = a;
-				vertices[1].x = worldVertices[SP_VERTEX_X1];
-				vertices[1].y = worldVertices[SP_VERTEX_Y1];
-				vertices[1].s = attachment->uvs[SP_VERTEX_X1];
-				vertices[1].t = attachment->uvs[SP_VERTEX_Y1];
-				
-				vertices[2].r = r;
-				vertices[2].g = g;
-				vertices[2].b = b;
-				vertices[2].a = a;
-				vertices[2].x = worldVertices[SP_VERTEX_X3];
-				vertices[2].y = worldVertices[SP_VERTEX_Y3];
-				vertices[2].s = attachment->uvs[SP_VERTEX_X3];
-				vertices[2].t = attachment->uvs[SP_VERTEX_Y3];
-				
-				vertices[3].r = r;
-				vertices[3].g = g;
-				vertices[3].b = b;
-				vertices[3].a = a;
-				vertices[3].x = worldVertices[SP_VERTEX_X4];
-				vertices[3].y = worldVertices[SP_VERTEX_Y4];
-				vertices[3].s = attachment->uvs[SP_VERTEX_X4];
-				vertices[3].t = attachment->uvs[SP_VERTEX_Y4];
-				
-				gl.bindTexture(*((GLuint*)t->getHandle()));
-		
-				gl.useVertexAttribArrays(ATTRIBFLAG_POS | ATTRIBFLAG_TEXCOORD);
-				
-				glVertexAttribPointer(ATTRIB_POS, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), &vertices[0].x);
-				glVertexAttribPointer(ATTRIB_TEXCOORD, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), &vertices[0].s);
-				
-				gl.prepareDraw();
-				gl.drawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
 				break;
 			}
 			case SP_ATTACHMENT_MESH:
 			{
+				spMeshAttachment* mesh = (spMeshAttachment*)slot->attachment;
+				if (mesh->verticesCount > K_MAX_VERTICES_NUM)
+				{
+					continue;
+				}
+				Texture *t = (Texture*)((spAtlasRegion*)mesh->rendererObject)->page->rendererObject;
+				spMeshAttachment_computeWorldVertices(mesh, slot, _worldVertices);
+				
+				for (int i = 0; i < mesh->trianglesCount; ++i)
+				{
+					int index = mesh->triangles[i] << 1;
+					addVertices(t, _worldVertices + index, mesh->uvs + index, 1);
+				}
 				
 				break;
 			}
 			case SP_ATTACHMENT_WEIGHTED_MESH:
 			{
+				spWeightedMeshAttachment* mesh = (spWeightedMeshAttachment*)slot->attachment;
+				if (mesh->uvsCount > K_MAX_VERTICES_NUM)
+				{
+					continue;
+				}
+				Texture *t = (Texture*)((spAtlasRegion*)mesh->rendererObject)->page->rendererObject;
+				spWeightedMeshAttachment_computeWorldVertices(mesh, slot, _worldVertices);
+				
+				for (int i = 0; i < mesh->trianglesCount; ++i)
+				{
+					int index = mesh->triangles[i] << 1;
+					addVertices(t, _worldVertices + index, mesh->uvs + index, 1);
+				}
 				
 				break;
 			}
@@ -184,6 +151,7 @@ void SpineAnimator::draw(GLGraphics* /*g*/)
 				break;
 		}
 	}
+	flush();
 }
 
 void SpineAnimator::setMix (const char* fromAnimation, const char* toAnimation, float duration)
@@ -209,6 +177,41 @@ void SpineAnimator::addAnimation (int trackIndex, const char* name, bool loop, f
 		return;
 	}
 	spAnimationState_addAnimation(_state, trackIndex, animation, loop, delay);
+}
+
+
+void SpineAnimator::addVertices(Texture* texture, float* vts, float* uvs, int n)
+{
+	if (_verticesCount + n > K_MAX_VERTICES_NUM)
+	{
+		flush();
+	}
+	else if (_texture != texture)
+	{
+		flush();
+		_texture = texture;
+	}
+	for (int i = 0; i < n; ++i, ++_verticesCount)
+	{
+		_vertices[_verticesCount * 2] = vts[i * 2];
+		_vertices[_verticesCount * 2 + 1] = - vts[i * 2 + 1];
+		_uvs[_verticesCount * 2] = uvs[i * 2];
+		_uvs[_verticesCount * 2 + 1] = uvs[i * 2 + 1];
+	}
+}
+
+void SpineAnimator::flush()
+{
+	if (_verticesCount > 0)
+	{
+		gl.bindTexture(*((GLuint*)_texture->getHandle()));
+		gl.useVertexAttribArrays(ATTRIBFLAG_POS | ATTRIBFLAG_TEXCOORD);
+		glVertexAttribPointer(ATTRIB_POS, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, _vertices);
+		glVertexAttribPointer(ATTRIB_TEXCOORD, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, _uvs);
+		gl.prepareDraw();
+		gl.drawArrays(GL_TRIANGLES, 0, _verticesCount);
+		_verticesCount = 0;
+	}
 }
 
 void SpineAnimator::registerClassToLua(lua_State* L)

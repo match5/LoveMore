@@ -20,6 +20,10 @@ namespace lovemore {
 	
 	class SpineAnimator : public Component
 	{
+		enum {
+			K_MAX_VERTICES_NUM = 128
+		};
+		
 	public:
 		
 		SpineAnimator(const char* skeletonDataFile, const char* atlasFile);
@@ -45,6 +49,16 @@ namespace lovemore {
 		spSkeleton*			_skeleton = nullptr;
 		spAtlas*			_atlas = nullptr;
 		spAnimationState*	_state = nullptr;
+		
+		Texture*			_texture = nullptr;
+		float				_vertices[K_MAX_VERTICES_NUM * 2];
+		float				_uvs[K_MAX_VERTICES_NUM * 2];
+		unsigned			_verticesCount = 0;
+		
+		static float*		_worldVertices;
+		
+		void				addVertices(Texture* texture, float* vts, float* uvs, int n);
+		void				flush();
 		
 		float				_speedScale = 1;
 	};
