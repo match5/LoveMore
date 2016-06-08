@@ -11,14 +11,16 @@
 #include "common/Vector.h"
 
 //LOVEMORE
-#include "Component.h"
+#include "Renderer.h"
 
 namespace lovemore {
 	
 	using namespace love;
 	using namespace love::graphics;
 	
-	class SpineAnimator : public Component
+	using namespace glad;
+	
+	class SpineAnimator : public Renderer
 	{
 		enum {
 			K_MAX_VERTICES_NUM = 128
@@ -53,17 +55,15 @@ namespace lovemore {
 		Texture*			_texture = nullptr;
 		float				_vertices[K_MAX_VERTICES_NUM * 2];
 		float				_uvs[K_MAX_VERTICES_NUM * 2];
-		unsigned			_verticesCount = 0;
+		GLbyte				_colors[K_MAX_VERTICES_NUM * 4];
+		GLshort				_verticesCount = 0;
 		
 		static float*		_worldVertices;
 		
-		void				addVertices(Texture* texture, float* vts, float* uvs, int n);
+		void				addVertices(Texture* texture, float* vts, float* uvs, int first, int n, GLbyte r, GLbyte g, GLbyte b, GLbyte a);
 		void				flush();
 		
 		float				_speedScale = 1;
-		
-		bool				_flipX = false;
-		bool				_flipY = false;
 	};
 }
 

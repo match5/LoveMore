@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		053C11381D06FE470081C098 /* game.love in Resources */ = {isa = PBXBuildFile; fileRef = 053C11371D06FE470081C098 /* game.love */; };
+		053C113C1D07EC760081C098 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 053C113A1D07EC760081C098 /* Renderer.cpp */; };
+		053C113D1D07EC760081C098 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 053C113A1D07EC760081C098 /* Renderer.cpp */; };
 		05ACCB7E1D01157C00C3C931 /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05ACCB5E1D01157C00C3C931 /* Component.cpp */; };
 		05ACCB7F1D01157C00C3C931 /* LuaComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05ACCB601D01157C00C3C931 /* LuaComponent.cpp */; };
 		05ACCB801D01157C00C3C931 /* SpriteRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05ACCB621D01157C00C3C931 /* SpriteRenderer.cpp */; };
@@ -108,7 +111,6 @@
 		FA9B4A0A16E1579F00074F42 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA9B4A0916E1579F00074F42 /* SDL2.framework */; };
 		FA9B4A0B16E157B500074F42 /* SDL2.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FA9B4A0916E1579F00074F42 /* SDL2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		FAAFF04716CB120000CCDE45 /* OpenAL-Soft.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FAAFF04616CB120000CCDE45 /* OpenAL-Soft.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		FAC1A449196F5DC600125284 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = FAC1A448196F5DC600125284 /* license.txt */; };
 		FAD4B1731C1F50A3004CF150 /* Theora.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FA27B3CA1B498696008A9DCE /* Theora.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -169,6 +171,9 @@
 
 /* Begin PBXFileReference section */
 		053C11311D0515DA0081C098 /* scope_guard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scope_guard.h; sourceTree = "<group>"; };
+		053C11371D06FE470081C098 /* game.love */ = {isa = PBXFileReference; lastKnownFileType = file; name = game.love; path = ../../../LoveGames/lovemoretest/game.love; sourceTree = "<group>"; };
+		053C113A1D07EC760081C098 /* Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
+		053C113B1D07EC760081C098 /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
 		05ACCB5E1D01157C00C3C931 /* Component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Component.cpp; sourceTree = "<group>"; };
 		05ACCB5F1D01157C00C3C931 /* Component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Component.h; sourceTree = "<group>"; };
 		05ACCB601D01157C00C3C931 /* LuaComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LuaComponent.cpp; sourceTree = "<group>"; };
@@ -288,7 +293,6 @@
 		FA7C63691A9C49570000FD29 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "Launch Screen.xib"; path = "ios/Launch Screen.xib"; sourceTree = "<group>"; };
 		FA9B4A0916E1579F00074F42 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = /Library/Frameworks/SDL2.framework; sourceTree = "<absolute>"; };
 		FAAFF04616CB120000CCDE45 /* OpenAL-Soft.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "OpenAL-Soft.framework"; path = "/Library/Frameworks/OpenAL-Soft.framework"; sourceTree = "<absolute>"; };
-		FAC1A448196F5DC600125284 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = license.txt; path = ../../license.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -357,6 +361,8 @@
 				05ACCB611D01157C00C3C931 /* LuaComponent.h */,
 				05ACCB621D01157C00C3C931 /* SpriteRenderer.cpp */,
 				05ACCB631D01157C00C3C931 /* SpriteRenderer.h */,
+				053C113A1D07EC760081C098 /* Renderer.cpp */,
+				053C113B1D07EC760081C098 /* Renderer.h */,
 			);
 			path = component;
 			sourceTree = "<group>";
@@ -546,7 +552,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FAC1A448196F5DC600125284 /* license.txt */,
+				053C11371D06FE470081C098 /* game.love */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -720,7 +726,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA5933751C6D625B000EC779 /* Images.xcassets in Resources */,
-				FAC1A449196F5DC600125284 /* license.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -729,6 +734,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA5D249C1A96CF4300C6FC8F /* Images.xcassets in Resources */,
+				053C11381D06FE470081C098 /* game.love in Resources */,
 				FA7C636A1A9C49570000FD29 /* Launch Screen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -769,6 +775,7 @@
 				05ACCCEE1D01698B00C3C931 /* Bone.c in Sources */,
 				05ACCCFA1D01698B00C3C931 /* IkConstraint.c in Sources */,
 				05ACCCF01D01698B00C3C931 /* BoneData.c in Sources */,
+				053C113C1D07EC760081C098 /* Renderer.cpp in Sources */,
 				05ACCD0E1D01698B00C3C931 /* Slot.c in Sources */,
 				05ACCCE41D01698B00C3C931 /* AnimationStateData.c in Sources */,
 				05ACCCE61D01698B00C3C931 /* Atlas.c in Sources */,
@@ -812,6 +819,7 @@
 				05ACCCEF1D01698B00C3C931 /* Bone.c in Sources */,
 				05ACCCFB1D01698B00C3C931 /* IkConstraint.c in Sources */,
 				05ACCCF11D01698B00C3C931 /* BoneData.c in Sources */,
+				053C113D1D07EC760081C098 /* Renderer.cpp in Sources */,
 				05ACCD0F1D01698B00C3C931 /* Slot.c in Sources */,
 				05ACCCE51D01698B00C3C931 /* AnimationStateData.c in Sources */,
 				05ACCCE71D01698B00C3C931 /* Atlas.c in Sources */,

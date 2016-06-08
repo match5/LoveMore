@@ -18,7 +18,7 @@ SpriteRenderer::~SpriteRenderer()
 
 int SpriteRenderer::lua_setTexture(lua_State *L)
 {
-	Texture* t = luax_checktype<Texture>(L, 1, GRAPHICS_TEXTURE_ID);
+	Texture* t = luax_checktype<Texture>(L, 2, GRAPHICS_TEXTURE_ID);
 	_texture = t;
 	_quad = nullptr;
 	return 0;
@@ -26,8 +26,8 @@ int SpriteRenderer::lua_setTexture(lua_State *L)
 
 int SpriteRenderer::lua_setTextureAndQuad(lua_State *L)
 {
-	Texture* t = luax_checktype<Texture>(L, 1, GRAPHICS_TEXTURE_ID);
-	Quad* q = luax_checktype<Quad>(L, 2, GRAPHICS_QUAD_ID);
+	Texture* t = luax_checktype<Texture>(L, 2, GRAPHICS_TEXTURE_ID);
+	Quad* q = luax_checktype<Quad>(L, 3, GRAPHICS_QUAD_ID);
 	_texture = t;
 	_quad = q;
 	return 0;
@@ -46,6 +46,7 @@ void SpriteRenderer::draw(GLGraphics* g)
 	{
 		g->push();
 		g->scale(_flipX? -1 : 1,_flipY ? -1 : 1);
+		g->setColor(_color);
 		if (_quad)
 		{
 			Quad::Viewport vp = _quad->getViewport();
@@ -62,13 +63,11 @@ void SpriteRenderer::draw(GLGraphics* g)
 void SpriteRenderer::registerClassToLua(lua_State* L)
 {
 	luabridge::getGlobalNamespace(L)
-	.deriveClass<SpriteRenderer, Component>("SpriteRenderer")
-	.addStaticFunction("castForm", &Component::castFrom<SpriteRenderer>)
+	.deriveClass<SpriteRenderer, Renderer>("SpriteRenderer")
+	.addStaticFunction("castFrom", &Component::castFrom<SpriteRenderer>)
 	.addCFunction("setTexture", &SpriteRenderer::lua_setTexture)
 	.addCFunction("setTextureAndQuad", &SpriteRenderer::lua_setTextureAndQuad)
 	.addFunction("setAnchor", &SpriteRenderer::setAnchor)
 	.addCFunction("getAnchor", &SpriteRenderer::lua_getAnchor)
-	.addData("flipX", &SpriteRenderer::_flipX)
-	.addData("flipY", &SpriteRenderer::_flipY)
 	.endClass();
 }

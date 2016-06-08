@@ -14,7 +14,6 @@ Transform::~Transform()
 {
 }
 
-
 int Transform::lua_getPosition(lua_State* L)
 {
 	lua_pushnumber(L, _x);

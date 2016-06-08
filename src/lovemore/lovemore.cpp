@@ -19,6 +19,7 @@ extern "C" {
 #include "gameobjct/Transform.h"
 #include "component/Component.h"
 #include "component/LuaComponent.h"
+#include "Component/Renderer.h"
 #include "component/SpriteRenderer.h"
 #include "component/SpineAnimator/SpineAnimator.h"
 
@@ -33,6 +34,12 @@ using namespace lovemore;
 static lua_State* _L = nullptr;
 
 static GameObject* root = nullptr;
+
+int lovemore_getRootObject(lua_State *L)
+{
+	luabridge::push(L, root);
+	return 1;
+}
 
 int lovemore_newGameObject(lua_State *L)
 {
@@ -65,16 +72,17 @@ int lovemore_newSprite(lua_State* L)
 	{
 		q = luax_checktype<graphics::Quad>(L, 2, GRAPHICS_QUAD_ID);
 	}
-	SpriteRenderer* r = new SpriteRenderer;
-	r->setTexture(t);
-	r->setQuad(q);
+	SpriteRenderer* sr = new SpriteRenderer;
+	sr->setTexture(t);
+	sr->setQuad(q);
 	
 	GameObject* obj = new GameObject;
-	obj->addComponent(r);
+	obj->addComponent(sr);
 	root->addChild(obj);
 	
 	luabridge::push(L, obj);
-	return 1;
+	luabridge::push(L, sr);
+	return 2;
 }
 
 int lovemore_newSpineAnimator(lua_State* L)
@@ -111,6 +119,7 @@ int luaopen_lovemore(lua_State *L)
 	
 	luabridge::getGlobalNamespace(L)
 		.beginNamespace("lovemore")
+			.addCFunction("getRootObject", lovemore_getRootObject)
 			.addCFunction("newGameObject", lovemore_newGameObject)
 			.addCFunction("clearGameObjects", lovemore_clearGameObjects)
 			.addCFunction("update", lovemore_update)
@@ -125,6 +134,7 @@ int luaopen_lovemore(lua_State *L)
 	Transform::registerClassToLua(L);
 	Component::registerClassToLua(L);
 	LuaComponent::registerClassToLua(L);
+	Renderer::registerClassToLua(L);
 	SpriteRenderer::registerClassToLua(L);
 	SpineAnimator::registerClassToLua(L);
 	

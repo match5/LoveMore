@@ -18,6 +18,8 @@ using namespace love::graphics::opengl;
 
 using namespace lovemore;
 
+using namespace glad;
+
 void _spAtlasPage_createTexture (spAtlasPage* self, const char* path)
 {
 	lua_State* L = lovemore_getLuaState();
@@ -89,9 +91,9 @@ void SpineAnimator::update(float dt)
 
 void SpineAnimator::draw(GLGraphics* g)
 {
+	spSlot* slot = nullptr;
 	g->push();
 	g->scale(_flipX? -1 : 1,_flipY ? -1 : 1);
-	spSlot* slot = nullptr;
 	for (int i = 0, n = _skeleton->slotsCount; i < n; ++i)
 	{
 		slot = _skeleton->drawOrder[i];
@@ -99,6 +101,39 @@ void SpineAnimator::draw(GLGraphics* g)
 		{
 			continue;
 		}
+		
+		love::graphics::Graphics::BlendAlpha	alpha;
+		love::graphics::Graphics::BlendMode		mode = g->getBlendMode(alpha);
+		love::graphics::Graphics::BlendMode		newMode;
+		switch (slot->data->blendMode)
+		{
+			case SP_BLEND_MODE_ADDITIVE:
+				newMode = love::graphics::Graphics::BlendMode::BLEND_ADD;
+				break;
+				
+			case SP_BLEND_MODE_MULTIPLY:
+				newMode = love::graphics::Graphics::BlendMode::BLEND_MULTIPLY;
+				break;
+				
+			case SP_BLEND_MODE_SCREEN:
+				newMode = love::graphics::Graphics::BlendMode::BLEND_SCREEN;
+				break;
+				
+			case SP_BLEND_MODE_NORMAL:
+			default:
+				newMode = love::graphics::Graphics::BlendMode::BLEND_ALPHA;
+				break;
+		}
+		if (newMode != mode) {
+			flush();
+			g->setBlendMode(newMode, alpha);
+		}
+		
+		GLbyte r = static_cast<GLbyte>(_skeleton->r * slot->r * _color.r);
+		GLbyte g = static_cast<GLbyte>(_skeleton->g * slot->g * _color.g);
+		GLbyte b = static_cast<GLbyte>(_skeleton->b * slot->b * _color.b);
+		GLbyte a = static_cast<GLbyte>(_skeleton->a * slot->a * _color.a);
+		
 		switch (slot->attachment->type)
 		{
 			case SP_ATTACHMENT_REGION:
@@ -107,9 +142,9 @@ void SpineAnimator::draw(GLGraphics* g)
 				Texture* t = (Texture*)((spAtlasRegion*)region->rendererObject)->page->rendererObject;
 				spRegionAttachment_computeWorldVertices(region, slot->bone, _worldVertices);
 				
-				addVertices(t, _worldVertices,region->uvs,  3);				//0 1 2
-				addVertices(t, _worldVertices,region->uvs,  1);				//0
-				addVertices(t, _worldVertices + 4,region->uvs + 4,  2);		//2 3
+				addVertices(t, _worldVertices,region->uvs, 0, 3, r, g, b, a);	//0 1 2
+				addVertices(t, _worldVertices,region->uvs, 0, 1, r, g, b, a);	//0
+				addVertices(t, _worldVertices,region->uvs, 2, 2, r, g, b, a);	//2 3
 				
 				break;
 			}
@@ -125,8 +160,7 @@ void SpineAnimator::draw(GLGraphics* g)
 				
 				for (int i = 0; i < mesh->trianglesCount; ++i)
 				{
-					int index = mesh->triangles[i] << 1;
-					addVertices(t, _worldVertices + index, mesh->uvs + index, 1);
+					addVertices(t, _worldVertices, mesh->uvs, mesh->triangles[i], 1, r, g, b, a);
 				}
 				
 				break;
@@ -143,8 +177,7 @@ void SpineAnimator::draw(GLGraphics* g)
 				
 				for (int i = 0; i < mesh->trianglesCount; ++i)
 				{
-					int index = mesh->triangles[i] << 1;
-					addVertices(t, _worldVertices + index, mesh->uvs + index, 1);
+					addVertices(t, _worldVertices, mesh->uvs, mesh->triangles[i], 1, r, g, b, a);
 				}
 				
 				break;
@@ -183,23 +216,28 @@ void SpineAnimator::addAnimation (int trackIndex, const char* name, bool loop, f
 }
 
 
-void SpineAnimator::addVertices(Texture* texture, float* vts, float* uvs, int n)
+void SpineAnimator::addVertices(Texture* texture, float* vts, float* uvs, int first, int n, GLbyte r, GLbyte g, GLbyte b, GLbyte a)
 {
 	if (_verticesCount + n > K_MAX_VERTICES_NUM)
 	{
 		flush();
 	}
-	else if (_texture != texture)
+	if (_texture != texture)
 	{
 		flush();
 		_texture = texture;
 	}
-	for (int i = 0; i < n; ++i, ++_verticesCount)
+	for (int i = first, iend = first + n; i < iend; ++i, ++_verticesCount)
 	{
 		_vertices[_verticesCount * 2] = vts[i * 2];
-		_vertices[_verticesCount * 2 + 1] = - vts[i * 2 + 1];
+		_vertices[_verticesCount * 2 + 1] = - vts[i * 2 + 1];	//filpY
 		_uvs[_verticesCount * 2] = uvs[i * 2];
 		_uvs[_verticesCount * 2 + 1] = uvs[i * 2 + 1];
+		
+		_colors[_verticesCount * 4] = r;
+		_colors[_verticesCount * 4 + 1] = g;
+		_colors[_verticesCount * 4 + 2] = b;
+		_colors[_verticesCount * 4 + 3] = a;
 	}
 }
 
@@ -208,9 +246,12 @@ void SpineAnimator::flush()
 	if (_verticesCount > 0)
 	{
 		gl.bindTexture(*((GLuint*)_texture->getHandle()));
-		gl.useVertexAttribArrays(ATTRIBFLAG_POS | ATTRIBFLAG_TEXCOORD);
+		gl.useVertexAttribArrays(ATTRIBFLAG_POS | ATTRIBFLAG_TEXCOORD | ATTRIBFLAG_COLOR);
+		
 		glVertexAttribPointer(ATTRIB_POS, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, _vertices);
 		glVertexAttribPointer(ATTRIB_TEXCOORD, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, _uvs);
+		glVertexAttribPointer(ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, _colors);
+		
 		gl.prepareDraw();
 		gl.drawArrays(GL_TRIANGLES, 0, _verticesCount);
 		_verticesCount = 0;
@@ -220,11 +261,9 @@ void SpineAnimator::flush()
 void SpineAnimator::registerClassToLua(lua_State* L)
 {
 	luabridge::getGlobalNamespace(L)
-	.deriveClass<SpineAnimator, Component>("SpineAnimator")
+	.deriveClass<SpineAnimator, Renderer>("SpineAnimator")
 	.addStaticFunction("castFrom", &Component::castFrom<SpineAnimator>)
 	.addData("speedScale", &SpineAnimator::_speedScale)
-	.addData("flipX", &SpineAnimator::_flipX)
-	.addData("flipY", &SpineAnimator::_flipY)
 	.addFunction("setMix", &SpineAnimator::setMix)
 	.addFunction("setAnimation", &SpineAnimator::setAnimation)
 	.addFunction("addAnimation", &SpineAnimator::addAnimation)

@@ -26,8 +26,8 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
-	clearComponents();
-	removeAllChildren();
+	//clearComponents();
+	//removeAllChildren();
 }
 
 void GameObject::addComponent(Component* com)

@@ -8,14 +8,14 @@
 #include "common/Vector.h"
 
 //LOVEMORE
-#include "Component.h"
+#include "Renderer.h"
 
 namespace lovemore {
 	
 	using namespace love;
 	using namespace love::graphics;
 	
-	class SpriteRenderer : public Component
+	class SpriteRenderer : public Renderer
 	{
 	public:
 		
