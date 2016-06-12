@@ -49,7 +49,7 @@ namespace lovemore {
 		
 		void removeAllChildren();
 		
-		void removeFormParent();
+		void removeFromParent();
 		
 		bool isActive() const { return _isActive; }
 		
@@ -57,9 +57,9 @@ namespace lovemore {
 		
 		Transform* getTransform() const { return _transform.get(); }
 		
-		void update(float dt);
+		virtual void update(float dt);
 		
-		void draw();
+		virtual void draw();
 		
 		void setZOreder(int zOrder);
 		

@@ -33,18 +33,11 @@ using namespace lovemore;
 
 static lua_State* _L = nullptr;
 
-static GameObject* root = nullptr;
-
-int lovemore_getRootObject(lua_State *L)
-{
-	luabridge::push(L, root);
-	return 1;
-}
+static GameObject* stage = nullptr;
 
 int lovemore_newGameObject(lua_State *L)
 {
 	GameObject* obj = new GameObject();
-	root->addChild(obj);
 	luabridge::push(L, obj);
 	return 1;
 };
@@ -78,7 +71,6 @@ int lovemore_newSprite(lua_State* L)
 	
 	GameObject* obj = new GameObject;
 	obj->addComponent(sr);
-	root->addChild(obj);
 	
 	luabridge::push(L, obj);
 	luabridge::push(L, sr);
@@ -94,22 +86,16 @@ int lovemore_newSpineAnimator(lua_State* L)
 	return 1;
 }
 
-int lovemore_clearGameObjects(lua_State *)
-{
-	root->removeAllChildren();
-	return 0;
-}
-
 int lovemore_update(lua_State *L)
 {
 	float dt = lua_tonumber(L, 1);
-	root->update(dt);
+	stage->update(dt);
 	return 0;
 }
 
 int lovemore_draw(lua_State *)
 {
-	root->draw();
+	stage->draw();
 	return 0;
 }
 
@@ -117,11 +103,12 @@ int luaopen_lovemore(lua_State *L)
 {
 	_L = L;
 	
+	stage = new GameObject;
+	
 	luabridge::getGlobalNamespace(L)
 		.beginNamespace("lovemore")
-			.addCFunction("getRootObject", lovemore_getRootObject)
+			.addVariable("stage", &stage)
 			.addCFunction("newGameObject", lovemore_newGameObject)
-			.addCFunction("clearGameObjects", lovemore_clearGameObjects)
 			.addCFunction("update", lovemore_update)
 			.addCFunction("draw", lovemore_draw)
 			.addCFunction("newComponent", lovemore_newComponent)
@@ -137,8 +124,6 @@ int luaopen_lovemore(lua_State *L)
 	Renderer::registerClassToLua(L);
 	SpriteRenderer::registerClassToLua(L);
 	SpineAnimator::registerClassToLua(L);
-	
-	root = new GameObject;
 	
 	return 0;
 }

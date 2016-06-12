@@ -26,8 +26,7 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
-	//clearComponents();
-	//removeAllChildren();
+	clearComponents();
 }
 
 void GameObject::addComponent(Component* com)
@@ -63,7 +62,7 @@ void GameObject::addChild(GameObject* obj)
 	_children.push_back(obj);
 	if (obj->_parent != nullptr)
 	{
-		obj->removeFormParent();
+		obj->removeFromParent();
 	}
 	obj->_parent = this;
 }
@@ -76,7 +75,7 @@ void GameObject::setParent(GameObject* obj)
 	}
 	else if (_parent)
 	{
-		removeFormParent();
+		removeFromParent();
 	}
 }
 
@@ -105,9 +104,12 @@ void GameObject::removeAllChildren()
 	_children.clear();
 }
 
-void GameObject::removeFormParent()
+void GameObject::removeFromParent()
 {
-	_parent->removeChild(this);
+	if (_parent)
+	{
+		_parent->removeChild(this);
+	}
 }
 
 void GameObject::update(float dt)
@@ -123,7 +125,7 @@ void GameObject::update(float dt)
 		}
 		for (auto child : _children)
 		{
-			if (child->isActive())
+			if (child.get())
 			{
 				child->update(dt);
 			}
@@ -203,11 +205,11 @@ void GameObject::registerClassToLua(lua_State* L)
 	.addFunction("addChild", &GameObject::addChild)
 	.addFunction("removeChild", &GameObject::removeChild)
 	.addFunction("removeAllChildren", &GameObject::removeAllChildren)
-	.addFunction("removeFormParent", &GameObject::removeFormParent)
+	.addFunction("removeFromParent", &GameObject::removeFromParent)
 	.addProperty("parent", &GameObject::getParent, &GameObject::setParent)
 	.addProperty("transform", &GameObject::getTransform)
 	.addProperty("zOrder", &GameObject::getZOreder, &GameObject::setZOreder)
-	.addData("isActive", &GameObject::_isActive)
-	.addData("isVisible", &GameObject::_isVisible)
+	.addData("active", &GameObject::_isActive)
+	.addData("visible", &GameObject::_isVisible)
 	.endClass();
 }

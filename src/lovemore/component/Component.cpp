@@ -59,6 +59,6 @@ void Component::registerClassToLua(lua_State* L)
 	.beginClass<Component>("Component")
 	.addProperty("owner", &Component::getOwner)
 	.addProperty("drawOrder", &Component::getDrawOrder, &Component::setDrawOrder)
-	.addData("isEnabled", &Component::_enabled)
+	.addData("enabled", &Component::_enabled)
 	.endClass();
 }
