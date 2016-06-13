@@ -23,7 +23,8 @@ namespace lovemore {
 	class SpineAnimator : public Renderer
 	{
 		enum {
-			K_MAX_VERTICES_NUM = 128
+			K_MAX_TRIANGLES_NUM		= 128,
+			K_MAX_VERTICES_NUM		= K_MAX_TRIANGLES_NUM * 3
 		};
 		
 	public:

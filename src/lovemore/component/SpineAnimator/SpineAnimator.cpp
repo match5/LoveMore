@@ -25,7 +25,7 @@ void _spAtlasPage_createTexture (spAtlasPage* self, const char* path)
 	lua_State* L = lovemore_getLuaState();
 	int top = lua_gettop(L);
 	
-	//call love.graphics.newImage()
+	//call love.graphics.newImage(path)
 	lua_getglobal(L, "love");
 	lua_getfield(L, -1, "graphics");
 	lua_getfield(L, -1, "newImage");
@@ -142,9 +142,9 @@ void SpineAnimator::draw(GLGraphics* g)
 				Texture* t = (Texture*)((spAtlasRegion*)region->rendererObject)->page->rendererObject;
 				spRegionAttachment_computeWorldVertices(region, slot->bone, _worldVertices);
 				
-				addVertices(t, _worldVertices,region->uvs, 0, 3, r, g, b, a);	//0 1 2
-				addVertices(t, _worldVertices,region->uvs, 0, 1, r, g, b, a);	//0
-				addVertices(t, _worldVertices,region->uvs, 2, 2, r, g, b, a);	//2 3
+				addVertices(t, _worldVertices, region->uvs, 0, 3, r, g, b, a);	//0 1 2
+				addVertices(t, _worldVertices, region->uvs, 2, 2, r, g, b, a);	//2 3
+				addVertices(t, _worldVertices, region->uvs, 0, 1, r, g, b, a);	//0
 				
 				break;
 			}
