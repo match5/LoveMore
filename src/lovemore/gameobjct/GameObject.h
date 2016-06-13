@@ -61,9 +61,9 @@ namespace lovemore {
 		
 		virtual void draw();
 		
-		void setZOreder(int zOrder);
+		void setZOrder(int zOrder);
 		
-		int getZOreder() const { return _zOrder; }
+		int getZOrder() const { return _zOrder; }
 		
 		void setComDrawOrderDirty(bool b) { _comDrawOrderDirty = b; }
 		

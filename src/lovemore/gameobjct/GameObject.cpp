@@ -86,10 +86,12 @@ GameObject* GameObject::getParent() const
 
 void GameObject::removeChild(GameObject* child)
 {
-	auto newEnd = std::remove_if(_children.begin(), _children.end(), [&child](ChildrenVec::value_type& c){
+	auto newEnd = std::remove_if(_children.begin(), _children.end(), [&child](ChildrenVec::value_type& c)
+	{
 		return child == c.get();
 	});
-	if (newEnd != _children.end()) {
+	if (newEnd != _children.end())
+	{
 		child->_parent = nullptr;
 	}
 	_children.erase(newEnd, _children.end());
@@ -118,17 +120,14 @@ void GameObject::update(float dt)
 	{
 		for (auto com : _components)
 		{
-			if (com.get() && com->isEnabled())
+			if (com->isEnabled())
 			{
 				com->doUpdate(dt);
 			}
 		}
 		for (auto child : _children)
 		{
-			if (child.get())
-			{
-				child->update(dt);
-			}
+			child->update(dt);
 		}
 	}
 }
@@ -138,9 +137,10 @@ void GameObject::draw()
 	if (_isVisible)
 	{
 		//sort children;
-		if (_comDrawOrderDirty) {
+		if (_comDrawOrderDirty)
+		{
 			std::stable_sort(_children.begin(), _children.end(), [](const ChildrenVec::value_type& a, const ChildrenVec::value_type& b) {
-				return a->getZOreder() < b->getZOreder();
+				return a->getZOrder() < b->getZOrder();
 			});
 			setChildrenZOrderDirty(false);
 		}
@@ -152,7 +152,7 @@ void GameObject::draw()
 		
 		//draw children zOrder < 0
 		auto it = _children.begin();
-		for (; it != _children.end() && it->get()->getZOreder() < 0; ++it)
+		for (; it != _children.end() && it->get()->getZOrder() < 0; ++it)
 		{
 			it->get()->draw();
 		}
@@ -184,7 +184,7 @@ void GameObject::draw()
 	}
 }
 
-void GameObject::setZOreder(int zOrder)
+void GameObject::setZOrder(int zOrder)
 {
 	if (_zOrder != zOrder)
 	{
@@ -208,7 +208,7 @@ void GameObject::registerClassToLua(lua_State* L)
 	.addFunction("removeFromParent", &GameObject::removeFromParent)
 	.addProperty("parent", &GameObject::getParent, &GameObject::setParent)
 	.addProperty("transform", &GameObject::getTransform)
-	.addProperty("zOrder", &GameObject::getZOreder, &GameObject::setZOreder)
+	.addProperty("zOrder", &GameObject::getZOrder, &GameObject::setZOrder)
 	.addData("active", &GameObject::_isActive)
 	.addData("visible", &GameObject::_isVisible)
 	.endClass();

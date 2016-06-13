@@ -12,7 +12,7 @@ Renderer::~Renderer()
 {
 }
 
-int Renderer::lua_setClolr(lua_State* L)
+int Renderer::lua_setColor(lua_State* L)
 {
 	Colorf c;
 	if (lua_istable(L, 2))
@@ -38,7 +38,7 @@ int Renderer::lua_setClolr(lua_State* L)
 	return 0;
 }
 
-int Renderer::lua_getClolr(lua_State* L)
+int Renderer::lua_getColor(lua_State* L)
 {
 	lua_pushnumber(L, _color.r);
 	lua_pushnumber(L, _color.g);
@@ -51,8 +51,8 @@ void Renderer::registerClassToLua(lua_State* L)
 {
 	luabridge::getGlobalNamespace(L)
 	.deriveClass<Renderer, Component>("Renderer")
-	.addCFunction("setColor", &Renderer::lua_setClolr)
-	.addCFunction("getColor", &Renderer::lua_getClolr)
+	.addCFunction("setColor", &Renderer::lua_setColor)
+	.addCFunction("getColor", &Renderer::lua_getColor)
 	.addProperty("alpha", &Renderer::getAlpha, &Renderer::setAlpha)
 	.addData("flipX", &Renderer::_flipX)
 	.addData("flipY", &Renderer::_flipY)

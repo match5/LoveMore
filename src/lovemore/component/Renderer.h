@@ -24,8 +24,8 @@ namespace lovemore {
 		void setAlpha(float a) { _color.a = 255 * a; }
 		float getAlpha() const { return _color.a / 255; }
 		
-		int lua_setClolr(lua_State* L);
-		int lua_getClolr(lua_State* L);
+		int lua_setColor(lua_State* L);
+		int lua_getColor(lua_State* L);
 		
 		static void registerClassToLua(lua_State* L);
 		
