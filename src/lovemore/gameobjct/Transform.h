@@ -39,6 +39,8 @@ namespace lovemore {
 		
 		void setScaleY(float s) { _scaleY = s; }
 		
+		float getScale() const { assert(_scaleX == _scaleY); return _scaleX; }
+		
 		void setScale(float s) { _scaleX = s; _scaleY = s; }
 		
 		void translate(float x, float y) { _x += x; _y += y; }
