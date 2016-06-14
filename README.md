@@ -45,6 +45,6 @@ Native extensions for LÖVE
 	    end);
 	  end
 	});
-	spine:addComponent();
+	spine:addComponent(comSpine);
 	lovemore.stage:addChild(spine);
 
