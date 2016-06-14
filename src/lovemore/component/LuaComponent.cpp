@@ -39,33 +39,50 @@ void LuaComponent::preLoadImp()
 void LuaComponent::start()
 {
 	preLoadImp();
-	if (_fnStart)
+	if (_fnStart.isFunction())
 	{
-		_fnStart(_luaImp);
+		try {
+			_fnStart(_luaImp);
+		} catch (std::exception& e) {
+			luaL_error(_luaImp.state(), e.what());
+		}
 	}
 }
 
 void LuaComponent::update(float dt)
 {
-	if (_fnUpdate)
+	if (_fnUpdate.isFunction())
 	{
-		_fnUpdate(_luaImp, dt);
+		try {
+			_fnUpdate(_luaImp, dt);
+		} catch (std::exception& e) {
+			luaL_error(_luaImp.state(), e.what());
+		}
 	}
 }
 
 void LuaComponent::end()
 {
-	if (_fnEnd)
+	if (_fnEnd.isFunction())
 	{
-		_fnEnd(_luaImp);
+		try {
+			_fnEnd(_luaImp);
+		} catch (std::exception& e) {
+			luaL_error(_luaImp.state(), e.what());
+		}
+		
 	}
 }
 
 void LuaComponent::draw(GLGraphics* /*g*/)
 {
-	if (_fnDraw)
+	if (_fnDraw.isFunction())
 	{
-		_fnDraw(_luaImp);
+		try {
+			_fnDraw(_luaImp);
+		} catch (std::exception& e) {
+			luaL_error(_luaImp.state(), e.what());
+		}
 	}
 }
 
