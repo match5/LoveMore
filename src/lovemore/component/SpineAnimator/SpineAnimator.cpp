@@ -57,9 +57,17 @@ char* _spUtil_readFile (const char* path, int* length)
 	return data;
 }
 
+void animationCallback (spAnimationState* state, int trackIndex, spEventType type, spEvent* event, int loopCount) {
+	static_cast<SpineAnimator*>(state->rendererObject)->onAnimationStateEvent(trackIndex, type, event, loopCount);
+}
+
 float* SpineAnimator::_worldVertices = new float[K_MAX_VERTICES_NUM * 2];
 
 SpineAnimator::SpineAnimator(const char* skeletonDataFile, const char* atlasFile)
+:_startListener(lovemore_getLuaState())
+,_endListener(lovemore_getLuaState())
+,_completeListener(lovemore_getLuaState())
+,_eventListener(lovemore_getLuaState())
 {
 	_atlas = spAtlas_createFromFile(atlasFile, nullptr);
 	assert(_atlas && "Error reading atlas file.");
@@ -72,12 +80,106 @@ SpineAnimator::SpineAnimator(const char* skeletonDataFile, const char* atlasFile
 	_skeleton = spSkeleton_create(skeletonData);
 	_state = spAnimationState_create(spAnimationStateData_create(_skeleton->data));
 	_state->rendererObject = this;
+	_state->listener = animationCallback;
 }
 
 SpineAnimator::~SpineAnimator()
 {
 	spAnimationStateData_dispose(_state->data);
 	spAnimationState_dispose(_state);
+}
+
+
+void SpineAnimator::setMix (const char* fromAnimation, const char* toAnimation, float duration)
+{
+	spAnimationStateData_setMixByName(_state->data, fromAnimation, toAnimation, duration);
+}
+
+void SpineAnimator::setAnimation(int trackIndex, const char* name, bool loop)
+{
+	spAnimation* animation = spSkeletonData_findAnimation(_skeleton->data, name);
+	if (!animation) {
+		printf("Spine: Animation not found: %s", name);
+		return;
+	}
+	spAnimationState_setAnimation(_state, trackIndex, animation, loop);
+}
+
+void SpineAnimator::addAnimation (int trackIndex, const char* name, bool loop, float delay)
+{
+	spAnimation* animation = spSkeletonData_findAnimation(_skeleton->data, name);
+	if (!animation) {
+		printf("Spine: Animation not found: %s", name);
+		return;
+	}
+	spAnimationState_addAnimation(_state, trackIndex, animation, loop, delay);
+}
+
+void SpineAnimator::clearTrack(int trackIndex)
+{
+	spAnimationState_clearTrack(_state, trackIndex);
+}
+
+void SpineAnimator::clearTracks()
+{
+	spAnimationState_clearTracks(_state);
+}
+
+int SpineAnimator::lua_setAnimationListener(lua_State* L)
+{
+	const char* name = lua_tostring(L, 2);
+	if (name && strlen(name) > 0) {
+		luabridge::LuaRef func = luabridge::Stack<luabridge::LuaRef>::get(L, 3);
+		if (func.isFunction()) {
+			
+			if (strcmp(name, "start") == 0)
+			{
+				_startListener = func;
+			}
+			else if (strcmp(name, "end") == 0)
+			{
+				_endListener = func;
+			}
+			else if (strcmp(name, "complete") == 0)
+			{
+				_completeListener = func;
+			}
+			else if (strcmp(name, "event") == 0)
+			{
+				_eventListener = func;
+			}
+		}
+	}
+	return 0;
+}
+
+void SpineAnimator::onAnimationStateEvent (int trackIndex, spEventType type, spEvent* event, int loopCount)
+{
+	switch (type) {
+		case SP_ANIMATION_START:
+			if (_startListener) _startListener(trackIndex);
+			break;
+		case SP_ANIMATION_END:
+			if (_endListener) _endListener(trackIndex);
+			break;
+		case SP_ANIMATION_COMPLETE:
+			if (_completeListener) _completeListener(trackIndex, loopCount);
+			break;
+		case SP_ANIMATION_EVENT:
+			if (_eventListener)
+			{
+				luabridge::LuaRef evt(lovemore_getLuaState());
+				evt["intValue"] = event->intValue;
+				evt["floatValue"] = event->floatValue;
+				if (event->stringValue)
+				{
+					evt["stringValue"] = event->stringValue;
+				}
+				evt["time"] = event->time;
+				_eventListener(trackIndex, evt);
+			}
+			break;
+	}
 }
 
 void SpineAnimator::update(float dt)
@@ -153,6 +255,7 @@ void SpineAnimator::draw(GLGraphics* g)
 				spMeshAttachment* mesh = (spMeshAttachment*)slot->attachment;
 				if (mesh->verticesCount > K_MAX_VERTICES_NUM)
 				{
+					assert(!"mesh->verticesCount > K_MAX_VERTICES_NUM");
 					continue;
 				}
 				Texture *t = (Texture*)((spAtlasRegion*)mesh->rendererObject)->page->rendererObject;
@@ -170,6 +273,7 @@ void SpineAnimator::draw(GLGraphics* g)
 				spWeightedMeshAttachment* mesh = (spWeightedMeshAttachment*)slot->attachment;
 				if (mesh->uvsCount > K_MAX_VERTICES_NUM)
 				{
+					assert(!"mesh->uvsCount > K_MAX_VERTICES_NUM");
 					continue;
 				}
 				Texture *t = (Texture*)((spAtlasRegion*)mesh->rendererObject)->page->rendererObject;
@@ -189,32 +293,6 @@ void SpineAnimator::draw(GLGraphics* g)
 	flush();
 	g->pop();
 }
-
-void SpineAnimator::setMix (const char* fromAnimation, const char* toAnimation, float duration)
-{
-	spAnimationStateData_setMixByName(_state->data, fromAnimation, toAnimation, duration);
-}
-
-void SpineAnimator::setAnimation(int trackIndex, const char* name, bool loop)
-{
-	spAnimation* animation = spSkeletonData_findAnimation(_skeleton->data, name);
-	if (!animation) {
-		printf("Spine: Animation not found: %s", name);
-		return;
-	}
-	spAnimationState_setAnimation(_state, trackIndex, animation, loop);
-}
-
-void SpineAnimator::addAnimation (int trackIndex, const char* name, bool loop, float delay)
-{
-	spAnimation* animation = spSkeletonData_findAnimation(_skeleton->data, name);
-	if (!animation) {
-		printf("Spine: Animation not found: %s", name);
-		return;
-	}
-	spAnimationState_addAnimation(_state, trackIndex, animation, loop, delay);
-}
-
 
 void SpineAnimator::addVertices(Texture* texture, float* vts, float* uvs, int first, int n, GLbyte r, GLbyte g, GLbyte b, GLbyte a)
 {
@@ -267,5 +345,8 @@ void SpineAnimator::registerClassToLua(lua_State* L)
 	.addFunction("setMix", &SpineAnimator::setMix)
 	.addFunction("setAnimation", &SpineAnimator::setAnimation)
 	.addFunction("addAnimation", &SpineAnimator::addAnimation)
+	.addFunction("clearTrack", &SpineAnimator::clearTrack)
+	.addFunction("clearTracks", &SpineAnimator::clearTracks)
+	.addCFunction("setAnimationListener", &SpineAnimator::lua_setAnimationListener)
 	.endClass();
 }

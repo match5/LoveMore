@@ -13,6 +13,9 @@
 //LOVEMORE
 #include "Renderer.h"
 
+#include "unordered_map"
+#include "string"
+
 namespace lovemore {
 	
 	using namespace love;
@@ -33,10 +36,6 @@ namespace lovemore {
 		
 		virtual ~SpineAnimator() override;
 		
-		virtual void update(float dt) override;
-		
-		virtual void draw(GLGraphics* g) override;
-		
 		virtual const char* getName() const override { return "SpineAnimator"; }
 		
 		void setMix (const char* fromAnimation, const char* toAnimation, float duration);
@@ -45,6 +44,18 @@ namespace lovemore {
 		
 		void addAnimation (int trackIndex, const char* name, bool loop, float delay);
 		
+		void clearTrack(int trackIndex);
+		
+		void clearTracks();
+		
+		int lua_setAnimationListener(lua_State* L);
+		
+		void onAnimationStateEvent (int trackIndex, spEventType type, spEvent* event, int loopCount);
+		
+		virtual void update(float dt) override;
+		
+		virtual void draw(GLGraphics* g) override;
+		
 		static void registerClassToLua(lua_State* L);
 		
 	protected:
@@ -52,6 +63,11 @@ namespace lovemore {
 		spSkeleton*			_skeleton = nullptr;
 		spAtlas*			_atlas = nullptr;
 		spAnimationState*	_state = nullptr;
+		
+		luabridge::LuaRef	_startListener;
+		luabridge::LuaRef	_endListener;
+		luabridge::LuaRef	_completeListener;
+		luabridge::LuaRef	_eventListener;
 		
 		Texture*			_texture = nullptr;
 		float				_vertices[K_MAX_VERTICES_NUM * 2];
