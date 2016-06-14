@@ -71,7 +71,6 @@ void LuaComponent::draw(GLGraphics* /*g*/)
 
 void LuaComponent::registerClassToLua(lua_State* L)
 {
-	
 	luabridge::getGlobalNamespace(L)
 	.deriveClass<LuaComponent, Component>("LuaComponent")
 	.addStaticFunction("castForm", &Component::castFrom<LuaComponent>)
