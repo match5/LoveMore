@@ -45,6 +45,17 @@ int lovemore_newGameObject(lua_State *L)
 int lovemore_newComponent(lua_State* L)
 {
 	luabridge::LuaRef imp = luabridge::Stack<luabridge::LuaRef>::get(L, 1);
+	if (imp.isFunction())
+	{
+		try {
+			imp = imp();
+		} catch (std::exception& e) {
+			luaL_error(L, e.what());
+		}
+	}
+	if (!imp.isTable()) {
+		luaL_error(L, "Invalid arg type %s, need table or function returns a table", lua_typename(L, imp.type()));
+	}
 	LuaComponent* com = new LuaComponent(imp);
 	luabridge::push(L, com);
 	return 1;

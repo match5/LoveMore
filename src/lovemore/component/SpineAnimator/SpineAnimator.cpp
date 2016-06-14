@@ -36,7 +36,10 @@ void _spAtlasPage_createTexture (spAtlasPage* self, const char* path)
 	}
 	lua_rawgeti(L, LUA_REGISTRYINDEX, love_graphics_newImage);
 	lua_pushstring(L, path);
-	lua_call(L, 1, 1);
+	if (lua_pcall(L, 1, 1, 0) != 0)
+	{
+		lua_error(L);
+	}
 	
 	Texture* t = luax_checktype<Texture>(L, -1, GRAPHICS_TEXTURE_ID);
 	t->retain();
