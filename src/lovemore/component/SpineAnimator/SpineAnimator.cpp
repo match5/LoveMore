@@ -168,7 +168,7 @@ void SpineAnimator::onAnimationStateEvent (int trackIndex, spEventType type, spE
 		case SP_ANIMATION_EVENT:
 			if (_eventListener)
 			{
-				luabridge::LuaRef evt(lovemore_getLuaState());
+				luabridge::LuaRef evt = luabridge::newTable(lovemore_getLuaState());
 				evt["intValue"] = event->intValue;
 				evt["floatValue"] = event->floatValue;
 				if (event->stringValue)
