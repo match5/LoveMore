@@ -26,9 +26,15 @@ void _spAtlasPage_createTexture (spAtlasPage* self, const char* path)
 	int top = lua_gettop(L);
 	
 	//call love.graphics.newImage(path)
-	lua_getglobal(L, "love");
-	lua_getfield(L, -1, "graphics");
-	lua_getfield(L, -1, "newImage");
+	static int love_graphics_newImage = 0;
+	if (love_graphics_newImage == 0)
+	{
+		lua_getglobal(L, "love");
+		lua_getfield(L, -1, "graphics");
+		lua_getfield(L, -1, "newImage");
+		love_graphics_newImage = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, love_graphics_newImage);
 	lua_pushstring(L, path);
 	lua_call(L, 1, 1);
 	
@@ -89,8 +95,7 @@ SpineAnimator::~SpineAnimator()
 	spAnimationState_dispose(_state);
 }
 
-
-void SpineAnimator::setMix (const char* fromAnimation, const char* toAnimation, float duration)
+void SpineAnimator::setMix(const char* fromAnimation, const char* toAnimation, float duration)
 {
 	spAnimationStateData_setMixByName(_state->data, fromAnimation, toAnimation, duration);
 }
@@ -128,10 +133,11 @@ void SpineAnimator::clearTracks()
 int SpineAnimator::lua_setAnimationListener(lua_State* L)
 {
 	const char* name = lua_tostring(L, 2);
-	if (name && strlen(name) > 0) {
+	if (name && strlen(name) > 0)
+	{
 		luabridge::LuaRef func = luabridge::Stack<luabridge::LuaRef>::get(L, 3);
-		if (func.isFunction()) {
-			
+		if (func.isFunction())
+		{
 			if (strcmp(name, "start") == 0)
 			{
 				_startListener = func;
@@ -155,28 +161,54 @@ int SpineAnimator::lua_setAnimationListener(lua_State* L)
 
 void SpineAnimator::onAnimationStateEvent (int trackIndex, spEventType type, spEvent* event, int loopCount)
 {
-	switch (type) {
+	switch (type)
+	{
 		case SP_ANIMATION_START:
-			if (_startListener) _startListener(trackIndex);
+			if (_startListener.isFunction())
+			{
+				try {
+					_startListener(trackIndex);
+				} catch (std::exception& e) {
+					luaL_error(_startListener.state(), e.what());
+				}
+			}
 			break;
 		case SP_ANIMATION_END:
-			if (_endListener) _endListener(trackIndex);
+			if (_endListener.isFunction())
+			{
+				try {
+					_endListener(trackIndex);
+				} catch (std::exception& e) {
+					luaL_error(_endListener.state(), e.what());
+				}
+			}
 			break;
 		case SP_ANIMATION_COMPLETE:
-			if (_completeListener) _completeListener(trackIndex, loopCount);
+			if (_completeListener.isFunction())
+			{
+				try {
+					_completeListener(trackIndex, loopCount);
+				} catch (std::exception& e) {
+					luaL_error(_completeListener.state(), e.what());
+				}
+			}
 			break;
 		case SP_ANIMATION_EVENT:
-			if (_eventListener)
+			if (_eventListener.isFunction())
 			{
-				luabridge::LuaRef evt = luabridge::newTable(lovemore_getLuaState());
-				evt["intValue"] = event->intValue;
-				evt["floatValue"] = event->floatValue;
-				if (event->stringValue)
-				{
-					evt["stringValue"] = event->stringValue;
+				try {
+					luabridge::LuaRef evt = luabridge::newTable(lovemore_getLuaState());
+					evt["intValue"] = event->intValue;
+					evt["floatValue"] = event->floatValue;
+					if (event->stringValue)
+					{
+						evt["stringValue"] = event->stringValue;
+					}
+					evt["time"] = event->time;
+					_eventListener(trackIndex, evt);
+				} catch (std::exception& e) {
+					luaL_error(_eventListener.state(), e.what());
 				}
-				evt["time"] = event->time;
-				_eventListener(trackIndex, evt);
 			}
 			break;
 	}
@@ -226,7 +258,8 @@ void SpineAnimator::draw(GLGraphics* g)
 				newMode = love::graphics::Graphics::BlendMode::BLEND_ALPHA;
 				break;
 		}
-		if (newMode != mode) {
+		if (newMode != mode)
+		{
 			flush();
 			g->setBlendMode(newMode, alpha);
 		}

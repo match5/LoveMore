@@ -70,7 +70,6 @@ void LuaComponent::end()
 		} catch (std::exception& e) {
 			luaL_error(_luaImp.state(), e.what());
 		}
-		
 	}
 }
 
