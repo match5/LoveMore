@@ -26,8 +26,8 @@ namespace lovemore {
 	class SpineAnimator : public Renderer
 	{
 		enum {
-			K_MAX_TRIANGLES_NUM		= 128,
-			K_MAX_VERTICES_NUM		= K_MAX_TRIANGLES_NUM * 3
+			K_MAX_TRIANGLES_NUM	= 256,
+			K_MAX_VERTICES_NUM	= K_MAX_TRIANGLES_NUM * 3
 		};
 		
 	public:
@@ -69,11 +69,11 @@ namespace lovemore {
 		luabridge::LuaRef	_completeListener;
 		luabridge::LuaRef	_eventListener;
 		
-		Texture*			_texture = nullptr;
-		float				_vertices[K_MAX_VERTICES_NUM * 2];
-		float				_uvs[K_MAX_VERTICES_NUM * 2];
-		GLbyte				_colors[K_MAX_VERTICES_NUM * 4];
-		GLshort				_verticesCount = 0;
+		static Texture*		_texture;
+		static GLshort		_verticesCount;
+		static float*		_vertices;
+		static float*		_uvs;
+		static GLbyte*		_colors;
 		
 		static float*		_worldVertices;
 		

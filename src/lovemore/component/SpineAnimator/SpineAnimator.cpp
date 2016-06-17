@@ -23,31 +23,25 @@ using namespace glad;
 void _spAtlasPage_createTexture (spAtlasPage* self, const char* path)
 {
 	lua_State* L = lovemore_getLuaState();
-	int top = lua_gettop(L);
 	
 	//call love.graphics.newImage(path)
-	static int love_graphics_newImage = 0;
+	static lua_CFunction love_graphics_newImage = nullptr;
 	if (love_graphics_newImage == 0)
 	{
 		lua_getglobal(L, "love");
 		lua_getfield(L, -1, "graphics");
 		lua_getfield(L, -1, "newImage");
-		love_graphics_newImage = luaL_ref(L, LUA_REGISTRYINDEX);
+		love_graphics_newImage = lua_tocfunction(L, -1);
 	}
-	lua_rawgeti(L, LUA_REGISTRYINDEX, love_graphics_newImage);
+	lua_settop(L, 0);
 	lua_pushstring(L, path);
-	if (lua_pcall(L, 1, 1, 0) != 0)
-	{
-		lua_error(L);
-	}
+	love_graphics_newImage(L);
 	
 	Texture* t = luax_checktype<Texture>(L, -1, GRAPHICS_TEXTURE_ID);
 	t->retain();
 	self->rendererObject = t;
 	self->width = t->getWidth();
 	self->height = t->getHeight();
-	
-	lua_settop(L, top);
 }
 
 void _spAtlasPage_disposeTexture (spAtlasPage* self)
@@ -70,7 +64,12 @@ void animationCallback (spAnimationState* state, int trackIndex, spEventType typ
 	static_cast<SpineAnimator*>(state->rendererObject)->onAnimationStateEvent(trackIndex, type, event, loopCount);
 }
 
-float* SpineAnimator::_worldVertices = new float[K_MAX_VERTICES_NUM * 2];
+Texture* SpineAnimator::_texture = nullptr;
+GLshort SpineAnimator::_verticesCount = 0;
+float*	SpineAnimator::_vertices = new float[K_MAX_VERTICES_NUM * 2];
+float*	SpineAnimator::_uvs = new float[K_MAX_VERTICES_NUM * 2];
+GLbyte*	SpineAnimator::_colors =  new GLbyte[K_MAX_VERTICES_NUM * 4];
+float*	SpineAnimator::_worldVertices = new float[K_MAX_VERTICES_NUM * 2];
 
 SpineAnimator::SpineAnimator(const char* skeletonDataFile, const char* atlasFile)
 :_startListener(lovemore_getLuaState())
@@ -86,10 +85,13 @@ SpineAnimator::SpineAnimator(const char* skeletonDataFile, const char* atlasFile
 	assert(skeletonData && (json->error ? json->error : "Error reading skeleton data file."));
 	spSkeletonJson_dispose(json);
 	
-	_skeleton = spSkeleton_create(skeletonData);
-	_state = spAnimationState_create(spAnimationStateData_create(_skeleton->data));
-	_state->rendererObject = this;
-	_state->listener = animationCallback;
+	if (skeletonData)
+	{
+		_skeleton = spSkeleton_create(skeletonData);
+		_state = spAnimationState_create(spAnimationStateData_create(_skeleton->data));
+		_state->rendererObject = this;
+		_state->listener = animationCallback;
+	}
 }
 
 SpineAnimator::~SpineAnimator()
@@ -320,6 +322,10 @@ void SpineAnimator::draw(GLGraphics* g)
 					addVertices(t, _worldVertices, mesh->uvs, mesh->triangles[i], 1, r, g, b, a);
 				}
 				
+				break;
+			}
+			case SP_ATTACHMENT_LINKED_MESH:
+			{
 				break;
 			}
 			default:
