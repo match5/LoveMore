@@ -7,7 +7,8 @@
 #include "common/Vector.h"
 
 //LOVEMORE
-#include "Component.h"
+#include "component/Component.h"
+#include "LuaBridge/RefCountedObject.h"
 
 namespace lovemore {
 	

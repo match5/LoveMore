@@ -5,15 +5,18 @@ extern "C" {
 #include <lualib.h>
 #include <lauxlib.h>
 }
-#include "LuaBridge.h"
 
 //LOVE
 #include "modules/graphics/opengl/Graphics.h"
 
 // LOVEMORE
 #include "GameObject.h"
-#include "Component.h"
+#include "component/Component.h"
 #include "Transform.h"
+#include "LuaBridge/LuaBridge.h"
+
+// C++
+#include <algorithm>
 
 using namespace love;
 using namespace lovemore;

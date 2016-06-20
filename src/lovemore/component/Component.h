@@ -8,9 +8,9 @@ extern "C" {
 #include <lualib.h>
 #include <lauxlib.h>
 }
-#include "LuaBridge.h"
-#include "RefCountedObject.h"
-#include "RefCountedPtr.h"
+#include "LuaBridge/LuaBridge.h"
+#include "LuaBridge/RefCountedObject.h"
+#include "LuaBridge/RefCountedPtr.h"
 
 // LOVE
 #include "common/Object.h"

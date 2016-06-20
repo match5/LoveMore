@@ -8,7 +8,9 @@
 #include "modules/graphics/Texture.h"
 
 //LOVEMORE
-#include "Component.h"
+#include "component/Component.h"
+#include "LuaBridge/RefCountedObject.h"
+#include "LuaBridge/RefCountedPtr.h"
 
 // C++
 #include <vector>

@@ -864,6 +864,7 @@
 					"$(inherited)",
 					/Library/Frameworks/Lua.framework/Headers,
 					/Library/Frameworks/SDL2.framework/Headers,
+					"\"$(SRCROOT)/../../src/lovemore\"",
 				);
 				INFOPLIST_FILE = "macosx/love-macosx.plist";
 				INSTALL_PATH = /Applications;
@@ -890,6 +891,7 @@
 					"$(inherited)",
 					/Library/Frameworks/Lua.framework/Headers,
 					/Library/Frameworks/SDL2.framework/Headers,
+					"\"$(SRCROOT)/../../src/lovemore\"",
 				);
 				INFOPLIST_FILE = "macosx/love-macosx.plist";
 				INSTALL_PATH = /Applications;
@@ -1051,6 +1053,7 @@
 					ios/include,
 					ios/include/luajit,
 					ios/include/SDL2,
+					"\"$(SRCROOT)/../../src/lovemore\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/ios/love-ios.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -1092,6 +1095,7 @@
 					ios/include,
 					ios/include/luajit,
 					ios/include/SDL2,
+					"\"$(SRCROOT)/../../src/lovemore\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/ios/love-ios.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -1134,6 +1138,7 @@
 					ios/include,
 					ios/include/luajit,
 					ios/include/SDL2,
+					"\"$(SRCROOT)/../../src/lovemore\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/ios/love-ios.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -1225,6 +1230,7 @@
 					"$(inherited)",
 					/Library/Frameworks/Lua.framework/Headers,
 					/Library/Frameworks/SDL2.framework/Headers,
+					"\"$(SRCROOT)/../../src/lovemore\"",
 				);
 				INFOPLIST_FILE = "macosx/love-macosx.plist";
 				INSTALL_PATH = /Applications;

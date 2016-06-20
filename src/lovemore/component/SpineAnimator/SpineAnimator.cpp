@@ -2,7 +2,6 @@
 //LoveMore
 #include "lovemore.h"
 #include "SpineAnimator.h"
-#include "scope_guard.h"
 
 //Love
 #include "modules/filesystem/Filesystem.h"
