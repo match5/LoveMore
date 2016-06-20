@@ -11,7 +11,7 @@
 #include "common/Vector.h"
 
 //LOVEMORE
-#include "Renderer.h"
+#include "../Renderer.h"
 
 //C++
 #include <unordered_map>

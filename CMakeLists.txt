@@ -1380,6 +1380,7 @@ include_directories(
 	src/libraries
 	src/modules
 	src/lovemore
+	src/lovemore/component/SpineAnimator/Spine/include
 	${MEGA_EXTRA_INCLUDE}
 )
 

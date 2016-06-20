@@ -8,7 +8,7 @@
 // Forward declare lua_State.
 struct lua_State;
 
-int luaopen_lovemore(lua_State *L);
+LOVE_EXPORT int luaopen_lovemore(lua_State *L);
 
 lua_State* lovemore_getLuaState();
 
