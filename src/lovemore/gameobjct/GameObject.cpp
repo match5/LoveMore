@@ -68,6 +68,7 @@ void GameObject::addChild(GameObject* obj)
 		obj->removeFromParent();
 	}
 	obj->_parent = this;
+	obj->_transform->setParent(_transform.get());
 }
 
 void GameObject::setParent(GameObject* obj)
@@ -96,6 +97,7 @@ void GameObject::removeChild(GameObject* child)
 	if (newEnd != _children.end())
 	{
 		child->_parent = nullptr;
+		child->_transform->setParent(nullptr);
 	}
 	_children.erase(newEnd, _children.end());
 }
