@@ -45,13 +45,19 @@ namespace lovemore {
 		
 		void setParent(GameObject* obj);
 		
-		GameObject* getParent() const;
+		GameObject* getParent() const { return _parent; }
 		
 		void removeChild(GameObject* child);
 		
 		void removeAllChildren();
 		
 		void removeFromParent();
+		
+		int	getChildrenNum() const { return _children.size(); }
+		
+		GameObject* getChild(int index) { return _children.at(index).get(); }
+		
+		int lua_getChild(lua_State* L);
 		
 		bool isActive() const { return _isActive; }
 		
@@ -94,6 +100,9 @@ namespace lovemore {
 		ChildrenVec _children;
 		
 		GameObject* _parent = nullptr;
+		
+		unsigned int		_id = 0;
+		static unsigned int _nextId;
 	};
 }
 

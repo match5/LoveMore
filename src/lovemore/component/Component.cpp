@@ -53,6 +53,14 @@ void Component::draw(GLGraphics* /*g*/)
 {
 }
 
+void Component::preDraw(GLGraphics* /*g*/)
+{
+}
+
+void Component::postDraw(GLGraphics* /*g*/)
+{
+}
+
 void Component::registerClassToLua(lua_State* L)
 {
 	luabridge::getGlobalNamespace(L)

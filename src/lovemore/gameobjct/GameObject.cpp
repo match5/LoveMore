@@ -21,7 +21,10 @@ extern "C" {
 using namespace love;
 using namespace lovemore;
 
+unsigned int GameObject::_nextId = 1;
+
 GameObject::GameObject()
+:_id(_nextId++)
 {
 	_components.reserve(4);
 	_transform = new Transform;
@@ -83,11 +86,6 @@ void GameObject::setParent(GameObject* obj)
 	}
 }
 
-GameObject* GameObject::getParent() const
-{
-	return _parent;
-}
-
 void GameObject::removeChild(GameObject* child)
 {
 	auto newEnd = std::remove_if(_children.begin(), _children.end(), [&child](ChildrenVec::value_type& c)
@@ -117,6 +115,19 @@ void GameObject::removeFromParent()
 	{
 		_parent->removeChild(this);
 	}
+}
+
+
+int GameObject::lua_getChild(lua_State* L)
+{
+	int index = lua_tointeger(L, 2) - 1;
+	if (0 <= index && index < (int)_children.size())
+	{
+		GameObject* child = getChild(index);
+		luabridge::Stack<GameObject*>::push(L, child);
+		return 1;
+	}
+	return 0;
 }
 
 void GameObject::update(float dt)
@@ -150,18 +161,6 @@ void GameObject::draw()
 			setChildrenZOrderDirty(false);
 		}
 		
-		//apply self transform
-		graphics::opengl::Graphics *g = Module::getInstance<graphics::opengl::Graphics>(Module::M_GRAPHICS);
-		g->push();
-		_transform->apply();
-		
-		//draw children zOrder < 0
-		auto it = _children.begin();
-		for (; it != _children.end() && it->get()->getZOrder() < 0; ++it)
-		{
-			it->get()->draw();
-		}
-		
 		//sort components
 		if (_comDrawOrderDirty)
 		{
@@ -170,6 +169,28 @@ void GameObject::draw()
 			});
 			setComDrawOrderDirty(false);
 		}
+		
+		//apply self transform
+		graphics::opengl::Graphics *g = Module::getInstance<graphics::opengl::Graphics>(Module::M_GRAPHICS);
+		g->push();
+		_transform->apply();
+		
+		//preDraw
+		for(auto com : _components)
+		{
+			if (com.get() && com->isEnabled())
+			{
+				com->preDraw(g);
+			}
+		}
+		
+		//draw children zOrder < 0
+		auto it = _children.begin();
+		for (; it != _children.end() && it->get()->getZOrder() < 0; ++it)
+		{
+			it->get()->draw();
+		}
+		
 		//draw self
 		for(auto com : _components)
 		{
@@ -183,6 +204,15 @@ void GameObject::draw()
 		for (; it != _children.end(); ++it)
 		{
 			it->get()->draw();
+		}
+		
+		//postDraw
+		for(auto com : _components)
+		{
+			if (com.get() && com->isEnabled())
+			{
+				com->postDraw(g);
+			}
 		}
 		
 		g->pop();
@@ -211,10 +241,13 @@ void GameObject::registerClassToLua(lua_State* L)
 	.addFunction("removeChild", &GameObject::removeChild)
 	.addFunction("removeAllChildren", &GameObject::removeAllChildren)
 	.addFunction("removeFromParent", &GameObject::removeFromParent)
+	.addFunction("getChildrenNum", &GameObject::getChildrenNum)
+	.addCFunction("getChild", &GameObject::lua_getChild)
 	.addProperty("parent", &GameObject::getParent, &GameObject::setParent)
 	.addProperty("transform", &GameObject::getTransform)
 	.addProperty("zOrder", &GameObject::getZOrder, &GameObject::setZOrder)
 	.addData("active", &GameObject::_isActive)
 	.addData("visible", &GameObject::_isVisible)
+	.addData("id", &GameObject::_id)
 	.endClass();
 }

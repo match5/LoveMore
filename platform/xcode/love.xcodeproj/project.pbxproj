@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		053C11381D06FE470081C098 /* game.love in Resources */ = {isa = PBXBuildFile; fileRef = 053C11371D06FE470081C098 /* game.love */; };
+		051BD3E61E8C0F8700733203 /* game.love in Resources */ = {isa = PBXBuildFile; fileRef = 051BD3E51E8C0F8700733203 /* game.love */; };
 		053C113C1D07EC760081C098 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 053C113A1D07EC760081C098 /* Renderer.cpp */; };
 		053C113D1D07EC760081C098 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 053C113A1D07EC760081C098 /* Renderer.cpp */; };
 		053C114F1D0FDEDF0081C098 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 053C114E1D0FDEDF0081C098 /* GameController.framework */; };
@@ -170,8 +170,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		051BD3E51E8C0F8700733203 /* game.love */ = {isa = PBXFileReference; lastKnownFileType = file; name = game.love; path = ../../../LoveGames/gui/game.love; sourceTree = "<group>"; };
 		053C11311D0515DA0081C098 /* scope_guard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scope_guard.h; sourceTree = "<group>"; };
-		053C11371D06FE470081C098 /* game.love */ = {isa = PBXFileReference; lastKnownFileType = file; name = game.love; path = ../../../LoveGames/lovemoretest/game.love; sourceTree = "<group>"; };
 		053C113A1D07EC760081C098 /* Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
 		053C113B1D07EC760081C098 /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
 		053C114E1D0FDEDF0081C098 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/GameController.framework; sourceTree = DEVELOPER_DIR; };
@@ -552,7 +552,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				053C11371D06FE470081C098 /* game.love */,
+				051BD3E51E8C0F8700733203 /* game.love */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -726,6 +726,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA5933751C6D625B000EC779 /* Images.xcassets in Resources */,
+				051BD3E61E8C0F8700733203 /* game.love in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -734,7 +735,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA5D249C1A96CF4300C6FC8F /* Images.xcassets in Resources */,
-				053C11381D06FE470081C098 /* game.love in Resources */,
 				FA7C636A1A9C49570000FD29 /* Launch Screen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1059,7 +1059,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.love2d.love;
+				PRODUCT_BUNDLE_IDENTIFIER = org.love2d.love.uitest;
 				PRODUCT_NAME = love;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1101,7 +1101,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.love2d.love;
+				PRODUCT_BUNDLE_IDENTIFIER = org.love2d.love.uitest;
 				PRODUCT_NAME = love;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1144,7 +1144,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.love2d.love;
+				PRODUCT_BUNDLE_IDENTIFIER = org.love2d.love.uitest;
 				PRODUCT_NAME = love;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

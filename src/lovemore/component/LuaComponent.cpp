@@ -5,12 +5,15 @@
 using namespace love;
 using namespace lovemore;
 
+
 LuaComponent::LuaComponent(luabridge::LuaRef& imp)
 :_luaImp(imp)
 ,_fnStart(imp.state())
 ,_fnUpdate(imp.state())
-,_fnEnd(imp.state())
+,_fnFinish(imp.state())
 ,_fnDraw(imp.state())
+,_fnPreDraw(imp.state())
+,_fnPostDraw(imp.state())
 {
 	assert(_luaImp.isTable() && "lua imp must be a table");
 	
@@ -28,8 +31,10 @@ void LuaComponent::preLoadImp()
 {
 	_fnStart = _luaImp["start"];
 	_fnUpdate = _luaImp["update"];
-	_fnEnd = _luaImp["end"];
+	_fnFinish = _luaImp["finish"];
 	_fnDraw = _luaImp["draw"];
+	_fnPreDraw = _luaImp["preDraw"];
+	_fnPostDraw = _luaImp["postDraw"];
 	
 	_luaImp["owner"] = _owner;
 	_luaImp["transform"] = _owner->getTransform();
@@ -63,10 +68,10 @@ void LuaComponent::update(float dt)
 
 void LuaComponent::end()
 {
-	if (_fnEnd.isFunction())
+	if (_started && _fnFinish.isFunction())
 	{
 		try {
-			_fnEnd(_luaImp);
+			_fnFinish(_luaImp);
 		} catch (std::exception& e) {
 			luaL_error(_luaImp.state(), e.what());
 		}
@@ -85,11 +90,35 @@ void LuaComponent::draw(GLGraphics* /*g*/)
 	}
 }
 
+void LuaComponent::preDraw(GLGraphics* /*g*/)
+{
+	if (_fnPreDraw.isFunction())
+	{
+		try {
+			_fnPreDraw(_luaImp);
+		} catch (std::exception& e) {
+			luaL_error(_luaImp.state(), e.what());
+		}
+	}
+}
+
+void LuaComponent::postDraw(GLGraphics* /*g*/)
+{
+	if (_fnPostDraw.isFunction())
+	{
+		try {
+			_fnPostDraw(_luaImp);
+		} catch (std::exception& e) {
+			luaL_error(_luaImp.state(), e.what());
+		}
+	}
+}
+
 void LuaComponent::registerClassToLua(lua_State* L)
 {
 	luabridge::getGlobalNamespace(L)
 	.deriveClass<LuaComponent, Component>("LuaComponent")
-	.addStaticFunction("castForm", &Component::castFrom<LuaComponent>)
+	.addStaticFunction("castFrom", &Component::castFrom<LuaComponent>)
 	.addProperty("script", &LuaComponent::getScript)
 	.endClass();
 }

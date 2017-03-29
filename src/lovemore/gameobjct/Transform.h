@@ -24,29 +24,29 @@ namespace lovemore {
 		
 		Vector getPosition() { return Vector(_x, _y); }
 		
-		void setPosition(float x, float y) { _x = x; _y = y; _dirty = _inverseDirty = true; }
+		void setPosition(float x, float y) { _x = x; _y = y; _matrixDirty = _inverseDirty = true; }
 		
 		int lua_getPosition(lua_State* L);
 		
 		float getRotation() { return _rotation; }
 		
-		void setRotation(float r) { _rotation = r; _dirty = _inverseDirty = true; }
+		void setRotation(float r) { _rotation = r; _matrixDirty = _inverseDirty = true; }
 		
 		float getScaleX() {return _scaleX; }
 		
 		float getScaleY() {return _scaleY; }
 		
-		void setScaleX(float s) { _scaleX = s; _dirty = _inverseDirty = true; }
+		void setScaleX(float s) { _scaleX = s; _matrixDirty = _inverseDirty = true; }
 		
-		void setScaleY(float s) { _scaleY = s; _dirty = _inverseDirty = true; }
+		void setScaleY(float s) { _scaleY = s; _matrixDirty = _inverseDirty = true; }
 		
 		float getScale() const { assert(_scaleX == _scaleY); return _scaleX; }
 		
-		void setScale(float s) { _scaleX = s; _scaleY = s; _dirty = _inverseDirty = true; }
+		void setScale(float s) { _scaleX = s; _scaleY = s; _matrixDirty = _inverseDirty = true; }
 		
-		void translate(float x, float y) { _x += x; _y += y; _dirty = _inverseDirty = true; }
+		void translate(float x, float y) { _x += x; _y += y; _matrixDirty = _inverseDirty = true; }
 		
-		void rotate(float r) { _rotation += r; _dirty = _inverseDirty = true; }
+		void rotate(float r) { _rotation += r; _matrixDirty = _inverseDirty = true; }
 		
 		void apply();
 		
@@ -56,9 +56,9 @@ namespace lovemore {
 		
 		void setParent(Transform* t) { _parent = t; }
 		
-		Vector& convertToWorldPosition(Vector& localPos);
+		Vector* convertToWorldPosition(Vector* localPos, int n);
 		
-		Vector& convertToLocalPosition(Vector& worldPos);
+		Vector* convertToLocalPosition(Vector* worldPos, int n);
 		
 		int lua_convertToWorldPosition(lua_State* L);
 		
@@ -76,10 +76,10 @@ namespace lovemore {
 		
 		Matrix4	_matrix;
 		Matrix4 _inverse;
-		bool	_dirty = false;
+		bool	_matrixDirty = false;
 		bool	_inverseDirty = false;
-		void	updateMatrix();
-		void	updateInverse();
+		inline void	updateMatrix();
+		inline void	updateInverse();
 		
 		Transform* _parent = nullptr;
 	};

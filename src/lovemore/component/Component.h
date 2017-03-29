@@ -54,6 +54,10 @@ namespace lovemore {
 		
 		virtual void draw(GLGraphics *g);
 		
+		virtual void preDraw(GLGraphics *g);
+		
+		virtual void postDraw(GLGraphics *g);
+		
 		virtual const char* getName() const { return ""; };
 		
 		template<class T_COM>

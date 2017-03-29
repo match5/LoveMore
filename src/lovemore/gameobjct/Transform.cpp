@@ -28,11 +28,11 @@ void Transform::apply()
 	{
 		g->translate(_x, _y);
 	}
-	if (-0.001 > _rotation || _rotation > 0.001 )
+	if (_rotation * _rotation > 0.001 )
 	{
 		g->rotate(LOVE_TORAD(_rotation));
 	}
-	if (-0.001 > _scaleX || _scaleX > 0.001 || -0.001 > _scaleY || _scaleY > 0.001 )
+	if (_scaleX * _scaleX + _scaleY * _scaleY > 0.001)
 	{
 		g->scale(_scaleX, _scaleY);
 	}
@@ -52,13 +52,13 @@ const Matrix4 &Transform::getInverse()
 
 void Transform::updateMatrix()
 {
-	if (_dirty)
+	if (_matrixDirty)
 	{
 		_matrix.setIdentity();
 		_matrix.translate(_x, _y);
 		_matrix.rotate(LOVE_TORAD(_rotation));
 		_matrix.scale(_scaleX, _scaleY);
-		_dirty = false;
+		_matrixDirty = false;
 	}
 }
 
@@ -75,62 +75,74 @@ void Transform::updateInverse()
 	}
 }
 
-Vector& Transform::convertToWorldPosition(Vector& localPos)
+Vector* Transform::convertToWorldPosition(Vector* localPos, int n)
 {
-	getMatrix().transform(&localPos, &localPos, 1);
+	getMatrix().transform(localPos, localPos, n);
 	if (_parent)
 	{
-		_parent->convertToWorldPosition(localPos);
+		_parent->convertToWorldPosition(localPos, n);
 	}
 	return localPos;
 }
 
-Vector& Transform::convertToLocalPosition(Vector& worldPos)
+Vector* Transform::convertToLocalPosition(Vector* worldPos, int n)
 {
-	if (_parent) {
-		_parent->convertToLocalPosition(worldPos);
+	if (_parent)
+	{
+		_parent->convertToLocalPosition(worldPos, n);
 	}
-	getInverse().transform(&worldPos, &worldPos, 1);
-	
+	getInverse().transform(worldPos, worldPos, n);
 	return worldPos;
 }
 
 
 int Transform::lua_convertToWorldPosition(lua_State* L)
 {
-	Vector pos;
-	pos.x = lua_tonumber(L, 2);
-	pos.y = lua_tonumber(L, 3);
+	int n = (lua_gettop(L) - 1) / 2;
+	n = n > 4 ? 4 : n;
+	Vector pos[4];
+	for (int i = 0; i < n; ++i) {
+		pos[i].x = lua_tonumber(L, i * 2 + 2);
+		pos[i].y = lua_tonumber(L, i * 2 + 3);
+	}
 	
-	convertToWorldPosition(pos);
+	convertToWorldPosition(pos, n);
 	
-	lua_pushnumber(L, pos.x);
-	lua_pushnumber(L, pos.y);
+	for (int i = 0; i < n; ++i) {
+		lua_pushnumber(L, pos[i].x);
+		lua_pushnumber(L, pos[i].y);
+	}
 	
-	return 2;
+	return n * 2;
 }
 
 int Transform::lua_convertToLocalPosition(lua_State* L)
 {
-	Vector pos;
-	pos.x = lua_tonumber(L, 2);
-	pos.y = lua_tonumber(L, 3);
+	int n = (lua_gettop(L) - 1) / 2;
+	n = n > 4 ? 4 : n;
+	Vector pos[4];
+	for (int i = 0; i < n; ++i) {
+		pos[i].x = lua_tonumber(L, i * 2 + 2);
+		pos[i].y = lua_tonumber(L, i * 2 + 3);
+	}
 	
-	convertToLocalPosition(pos);
+	convertToLocalPosition(pos, n);
 	
-	lua_pushnumber(L, pos.x);
-	lua_pushnumber(L, pos.y);
+	for (int i = 0; i < n; ++i) {
+		lua_pushnumber(L, pos[i].x);
+		lua_pushnumber(L, pos[i].y);
+	}
 	
-	return 2;
+	return n * 2;
 }
 
 void Transform::registerClassToLua(lua_State* L)
 {
 	luabridge::getGlobalNamespace(L)
 	.beginClass<Transform>("Transform")
-	.addCFunction("getPosition", &Transform::lua_getPosition)
 	.addCFunction("convertToWorldPosition", &Transform::lua_convertToWorldPosition)
 	.addCFunction("convertToLocalPosition", &Transform::lua_convertToLocalPosition)
+	.addCFunction("getPosition", &Transform::lua_getPosition)
 	.addFunction("setPosition", &Transform::setPosition)
 	.addFunction("translate", &Transform::translate)
 	.addFunction("rotate", &Transform::rotate)

@@ -327,6 +327,10 @@ void SpineAnimator::draw(GLGraphics* g)
 			{
 				break;
 			}
+			case SP_ATTACHMENT_WEIGHTED_LINKED_MESH:
+			{
+				break;
+			}
 			default:
 				break;
 		}

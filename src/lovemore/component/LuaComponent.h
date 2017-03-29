@@ -32,6 +32,8 @@ namespace lovemore {
 		virtual void end() override;
 		
 		virtual void draw(GLGraphics* g) override;
+		virtual void preDraw(GLGraphics* g) override;
+		virtual void postDraw(GLGraphics* g) override;
 		
 		virtual const char* getName() const override { return _name.c_str(); }
 		
@@ -45,8 +47,10 @@ namespace lovemore {
 		
 		luabridge::LuaRef	_fnStart;
 		luabridge::LuaRef	_fnUpdate;
-		luabridge::LuaRef	_fnEnd;
+		luabridge::LuaRef	_fnFinish;
 		luabridge::LuaRef	_fnDraw;
+		luabridge::LuaRef	_fnPreDraw;
+		luabridge::LuaRef	_fnPostDraw;
 		
 		std::string			_name;
 	};
