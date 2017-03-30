@@ -97,19 +97,6 @@ int lovemore_newSpineAnimator(lua_State* L)
 	return 1;
 }
 
-int lovemore_update(lua_State *L)
-{
-	float dt = lua_tonumber(L, 1);
-	stage->update(dt);
-	return 0;
-}
-
-int lovemore_draw(lua_State *)
-{
-	stage->draw();
-	return 0;
-}
-
 int luaopen_lovemore(lua_State *L)
 {
 	_L = L;
@@ -118,10 +105,8 @@ int luaopen_lovemore(lua_State *L)
 	
 	luabridge::getGlobalNamespace(L)
 		.beginNamespace("lovemore")
-			.addVariable("stage", &stage)
+			.addVariable("stage", &stage, false)
 			.addCFunction("newGameObject", lovemore_newGameObject)
-			.addCFunction("update", lovemore_update)
-			.addCFunction("draw", lovemore_draw)
 			.addCFunction("newComponent", lovemore_newComponent)
 			.addCFunction("newSpriteRenderer", lovemore_newSpriteRenderer)
 			.addCFunction("newSprite", lovemore_newSprite)

@@ -22,19 +22,27 @@ namespace lovemore {
 		
 		virtual ~Transform() override;
 		
-		Vector getPosition() { return Vector(_x, _y); }
+		Vector getPosition() const { return Vector(_x, _y); }
+
+		float getPositionX() const { return _x; }
+
+		float getPositionY() const { return _y; }
 		
 		void setPosition(float x, float y) { _x = x; _y = y; _matrixDirty = _inverseDirty = true; }
 		
+		void setPositionX(float x) { _x = x; _matrixDirty = _inverseDirty = true; }
+		
+		void setPositionY(float y) { _y = y; _matrixDirty = _inverseDirty = true; }
+		
 		int lua_getPosition(lua_State* L);
 		
-		float getRotation() { return _rotation; }
+		float getRotation() const { return _rotation; }
 		
 		void setRotation(float r) { _rotation = r; _matrixDirty = _inverseDirty = true; }
 		
-		float getScaleX() {return _scaleX; }
+		float getScaleX() const {return _scaleX; }
 		
-		float getScaleY() {return _scaleY; }
+		float getScaleY() const {return _scaleY; }
 		
 		void setScaleX(float s) { _scaleX = s; _matrixDirty = _inverseDirty = true; }
 		

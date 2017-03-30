@@ -127,6 +127,10 @@ int GameObject::lua_getChild(lua_State* L)
 		luabridge::Stack<GameObject*>::push(L, child);
 		return 1;
 	}
+	else
+	{
+		luaL_error(L, "invalid index:%d children.size:%d", index + 1, (int)_children.size());
+	}
 	return 0;
 }
 
@@ -235,19 +239,21 @@ void GameObject::registerClassToLua(lua_State* L)
 {
 	luabridge::getGlobalNamespace(L)
 	.beginClass<GameObject>("GameObject")
+	.addFunction("update", &GameObject::update)
+	.addFunction("draw", &GameObject::draw)
 	.addFunction("addComponent", &GameObject::addComponent)
 	.addFunction("getComponent", &GameObject::getComponent)
 	.addFunction("addChild", &GameObject::addChild)
 	.addFunction("removeChild", &GameObject::removeChild)
 	.addFunction("removeAllChildren", &GameObject::removeAllChildren)
 	.addFunction("removeFromParent", &GameObject::removeFromParent)
-	.addFunction("getChildrenNum", &GameObject::getChildrenNum)
 	.addCFunction("getChild", &GameObject::lua_getChild)
 	.addProperty("parent", &GameObject::getParent, &GameObject::setParent)
+	.addProperty("childrenNum", &GameObject::getChildrenNum)
 	.addProperty("transform", &GameObject::getTransform)
 	.addProperty("zOrder", &GameObject::getZOrder, &GameObject::setZOrder)
-	.addData("active", &GameObject::_isActive)
-	.addData("visible", &GameObject::_isVisible)
-	.addData("id", &GameObject::_id)
+	.addData("isActive", &GameObject::_isActive)
+	.addData("isVisible", &GameObject::_isVisible)
+	.addData("id", &GameObject::_id, false)
 	.endClass();
 }
