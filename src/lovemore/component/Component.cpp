@@ -1,5 +1,5 @@
 
-#include "gameobjct/GameObject.h"
+#include "gameobject/GameObject.h"
 #include "Component.h"
 
 using namespace love;

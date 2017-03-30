@@ -15,8 +15,8 @@ extern "C" {
 
 // LOVE MORE
 #include "lovemore.h"
-#include "gameobjct/GameObject.h"
-#include "gameobjct/Transform.h"
+#include "gameobject/GameObject.h"
+#include "gameobject/Transform.h"
 #include "component/Component.h"
 #include "component/LuaComponent.h"
 #include "Component/Renderer.h"

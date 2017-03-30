@@ -2,8 +2,8 @@
 #include "common/runtime.h"
 
 #include "SpriteRenderer.h"
-#include "gameobjct/GameObject.h"
-#include "gameobjct/Transform.h"
+#include "gameobject/GameObject.h"
+#include "gameobject/Transform.h"
 
 using namespace love;
 using namespace lovemore;

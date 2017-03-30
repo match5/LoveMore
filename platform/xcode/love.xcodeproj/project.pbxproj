@@ -342,7 +342,7 @@
 			children = (
 				05ACCB6B1D01157C00C3C931 /* LuaBridge */,
 				053C11301D0515990081C098 /* common */,
-				05ACCB641D01157C00C3C931 /* gameobjct */,
+				05ACCB641D01157C00C3C931 /* gameobject */,
 				05ACCB5D1D01157C00C3C931 /* component */,
 				05ACCB691D01157C00C3C931 /* lovemore.cpp */,
 				05ACCB6A1D01157C00C3C931 /* lovemore.h */,
@@ -367,7 +367,7 @@
 			path = component;
 			sourceTree = "<group>";
 		};
-		05ACCB641D01157C00C3C931 /* gameobjct */ = {
+		05ACCB641D01157C00C3C931 /* gameobject */ = {
 			isa = PBXGroup;
 			children = (
 				05ACCB651D01157C00C3C931 /* GameObject.cpp */,
@@ -375,7 +375,7 @@
 				05ACCB671D01157C00C3C931 /* Transform.cpp */,
 				05ACCB681D01157C00C3C931 /* Transform.h */,
 			);
-			path = gameobjct;
+			path = gameobject;
 			sourceTree = "<group>";
 		};
 		05ACCB6B1D01157C00C3C931 /* LuaBridge */ = {
@@ -935,7 +935,7 @@
 					"\"$(SRCROOT)/../../src/libraries\"",
 					"\"$(SRCROOT)/../../src/modules\"",
 					"\"$(SRCROOT)/../../src/lovemore/component/SpineAnimator/\"",
-					"\"$(SRCROOT)/../../src/lovemore/component/SpineAnimator/Spine/include\"",
+					"\"$(SRCROOT)/../../src/lovemore/component/SpineAnimator/spine-c/include\"",
 				);
 				INFOPLIST_FILE = "love-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -994,7 +994,7 @@
 					"\"$(SRCROOT)/../../src/libraries\"",
 					"\"$(SRCROOT)/../../src/modules\"",
 					"\"$(SRCROOT)/../../src/lovemore/component/SpineAnimator/\"",
-					"\"$(SRCROOT)/../../src/lovemore/component/SpineAnimator/Spine/include\"",
+					"\"$(SRCROOT)/../../src/lovemore/component/SpineAnimator/spine-c/include\"",
 				);
 				INFOPLIST_FILE = "love-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -1188,7 +1188,7 @@
 					"\"$(SRCROOT)/../../src/libraries\"",
 					"\"$(SRCROOT)/../../src/modules\"",
 					"\"$(SRCROOT)/../../src/lovemore/component/SpineAnimator/\"",
-					"\"$(SRCROOT)/../../src/lovemore/component/SpineAnimator/Spine/include\"",
+					"\"$(SRCROOT)/../../src/lovemore/component/SpineAnimator/spine-c/include\"",
 				);
 				INFOPLIST_FILE = "love-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;

@@ -869,77 +869,77 @@ set(LOVE_MORE_COMPONENT
 source_group("lovemore\\component" FILES ${LOVE_MORE_COMPONENT})
 
 set(LOVE_MORE_SPINE_C_INCLUDE
-	src/lovemore/component/SpineAnimator/Spine/include/spine/Animation.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/AnimationState.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/AnimationStateData.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/Atlas.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/AtlasAttachmentLoader.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/Attachment.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/AttachmentLoader.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/Bone.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/BoneData.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/BoundingBoxAttachment.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/Event.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/EventData.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/extension.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/IkConstraint.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/IkConstraintData.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/MeshAttachment.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/RegionAttachment.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/Skeleton.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/SkeletonBounds.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/SkeletonData.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/SkeletonJson.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/Skin.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/Slot.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/SlotData.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/spine.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/TransformConstraint.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/TransformConstraintData.h
-	src/lovemore/component/SpineAnimator/Spine/include/spine/WeightedMeshAttachment.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/Animation.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/AnimationState.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/AnimationStateData.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/Atlas.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/AtlasAttachmentLoader.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/Attachment.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/AttachmentLoader.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/Bone.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/BoneData.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/BoundingBoxAttachment.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/Event.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/EventData.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/extension.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/IkConstraint.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/IkConstraintData.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/MeshAttachment.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/RegionAttachment.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/Skeleton.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/SkeletonBounds.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/SkeletonData.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/SkeletonJson.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/Skin.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/Slot.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/SlotData.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/spine.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/TransformConstraint.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/TransformConstraintData.h
+	src/lovemore/component/SpineAnimator/spine-c/include/spine/WeightedMeshAttachment.h
 )
 
 set(LOVE_MORE_SPINE_C_SRC
-	src/lovemore/component/SpineAnimator/Spine/src/spine/Animation.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/AnimationState.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/AnimationStateData.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/Atlas.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/AtlasAttachmentLoader.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/Attachment.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/AttachmentLoader.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/Bone.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/BoneData.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/BoundingBoxAttachment.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/Event.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/EventData.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/extension.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/IkConstraint.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/IkConstraintData.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/MeshAttachment.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/RegionAttachment.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/Skeleton.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/SkeletonBounds.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/SkeletonData.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/SkeletonJson.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/Skin.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/Slot.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/SlotData.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/TransformConstraint.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/TransformConstraintData.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/WeightedMeshAttachment.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/Json.c
-	src/lovemore/component/SpineAnimator/Spine/src/spine/Json.h
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/Animation.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/AnimationState.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/AnimationStateData.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/Atlas.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/AtlasAttachmentLoader.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/Attachment.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/AttachmentLoader.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/Bone.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/BoneData.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/BoundingBoxAttachment.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/Event.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/EventData.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/extension.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/IkConstraint.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/IkConstraintData.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/MeshAttachment.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/RegionAttachment.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/Skeleton.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/SkeletonBounds.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/SkeletonData.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/SkeletonJson.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/Skin.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/Slot.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/SlotData.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/TransformConstraint.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/TransformConstraintData.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/WeightedMeshAttachment.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/Json.c
+	src/lovemore/component/SpineAnimator/spine-c/src/spine/Json.h
 )
 source_group("lovemore\\component\\Spine\\src" FILES ${LOVE_MORE_SPINE_C_SRC})
 source_group("lovemore\\component\\Spine\\include" FILES ${LOVE_MORE_SPINE_C_INCLUDE})
 
 set(LOVE_MORE_GAMEOBJECT
-	src/lovemore/gameobjct/GameObject.cpp
-	src/lovemore/gameobjct/GameObject.h
-	src/lovemore/gameobjct/Transform.cpp
-	src/lovemore/gameobjct/Transform.h
+	src/lovemore/gameobject/GameObject.cpp
+	src/lovemore/gameobject/GameObject.h
+	src/lovemore/gameobject/Transform.cpp
+	src/lovemore/gameobject/Transform.h
 )
-source_group("lovemore\\gameobjct" FILES ${LOVE_MORE_GAMEOBJECT})
+source_group("lovemore\\gameobject" FILES ${LOVE_MORE_GAMEOBJECT})
 
 set(LOVE_MORE_LUABRIDGE
 	src/lovemore/LuaBridge/LuaBridge.h
@@ -1380,7 +1380,7 @@ include_directories(
 	src/libraries
 	src/modules
 	src/lovemore
-	src/lovemore/component/SpineAnimator/Spine/include
+	src/lovemore/component/SpineAnimator/spine-c/include
 	${MEGA_EXTRA_INCLUDE}
 )
 
