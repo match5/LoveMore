@@ -1,21 +1,13 @@
-#ifndef LOVEMORE_SPINE_H
-#define LOVEMORE_SPINE_H
+#ifndef LOVEMORE_SPINE_ANIMATOR_H
+#define LOVEMORE_SPINE_ANIMATOR_H
 
 #include "base/LuaObject.h"
+#include "base/GlGraphics.h"
 
 //SPINE
 #include <spine/spine.h>
 #include <spine/extension.h>
 
-//LOVE 
-#include "modules/graphics/opengl/Graphics.h" 
-#include "modules/graphics/Texture.h"
-#include "modules/graphics/Quad.h"
-#include "common/Vector.h"
-
-//C++
-#include <unordered_map>
-#include <string>
 
 namespace lovemore {
 	
@@ -37,8 +29,6 @@ namespace lovemore {
 		
 		virtual ~SpineAnimator() override;
 		
-		virtual const char* getName() const override { return "SpineAnimator"; }
-		
 		void setMix (const char* fromAnimation, const char* toAnimation, float duration);
 		
 		void setAnimation(int trackIndex, const char* name, bool loop);
@@ -53,9 +43,9 @@ namespace lovemore {
 		
 		void onAnimationStateEvent (int trackIndex, spEventType type, spEvent* event, int loopCount);
 		
-		virtual void update(float dt) override;
+		virtual void update(float dt);
 		
-		virtual void draw(GLGraphics* g) override;
+		virtual void draw(float x, float y, float angle, float sx, float sy, float ox, float oy);
 		
 		static void registerClassToLua(lua_State* L);
 		

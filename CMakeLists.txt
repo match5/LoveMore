@@ -851,6 +851,7 @@ source_group("lovemore" FILES ${LOVE_MORE_ROOT})
 
 set(LOVE_MORE_BASE
 	src/lovemore/base/LuaObject.h
+	src/lovemore/base/GlGraphics.h
 )
 source_group("lovemore\\base" FILES ${LOVE_MORE_BASE})
 

@@ -1,5 +1,7 @@
 
 //LoveMore
+#include "base/GlGraphics.h"
+
 #include "lovemore.h"
 #include "SpineAnimator.h"
 
@@ -9,7 +11,7 @@
 #include "modules/graphics/opengl/Image.h"
 #include "modules/graphics/opengl/OpenGL.h"
 #include "common/runtime.h"
-
+ 
 using namespace love;
 using namespace love::filesystem;
 using namespace love::graphics;
@@ -228,11 +230,16 @@ void SpineAnimator::update(float dt)
 	spSkeleton_updateWorldTransform(_skeleton);
 }
 
-void SpineAnimator::draw(GLGraphics* g)
+void SpineAnimator::draw(float x, float y, float angle, float sx, float sy, float ox, float oy)
 {
+	OpenGL::TempDebugGroup debuggroup("SpineAnimator draw");
+	Matrix4 t(x, y, angle, sx, sy, ox, oy, 0, 0);
+	
+	OpenGL::TempTransform transform(gl);
+	transform.get() *= t;
+
+	GlGraphics *g = Module::getInstance<GlGraphics>(Module::M_GRAPHICS);
 	spSlot* slot = nullptr;
-	g->push();
-	g->scale(_flipX? -1 : 1,_flipY ? -1 : 1);
 	for (int i = 0, n = _skeleton->slotsCount; i < n; ++i)
 	{
 		slot = _skeleton->drawOrder[i];
@@ -269,10 +276,10 @@ void SpineAnimator::draw(GLGraphics* g)
 			g->setBlendMode(newMode, alpha);
 		}
 		
-		GLbyte r = static_cast<GLbyte>(_skeleton->r * slot->r * _color.r);
-		GLbyte g = static_cast<GLbyte>(_skeleton->g * slot->g * _color.g);
-		GLbyte b = static_cast<GLbyte>(_skeleton->b * slot->b * _color.b);
-		GLbyte a = static_cast<GLbyte>(_skeleton->a * slot->a * _color.a);
+		GLbyte r = static_cast<GLbyte>(_skeleton->r * slot->r * 255);
+		GLbyte g = static_cast<GLbyte>(_skeleton->g * slot->g * 255);
+		GLbyte b = static_cast<GLbyte>(_skeleton->b * slot->b * 255);
+		GLbyte a = static_cast<GLbyte>(_skeleton->a * slot->a * 255);
 		
 		switch (slot->attachment->type)
 		{
@@ -337,7 +344,6 @@ void SpineAnimator::draw(GLGraphics* g)
 		}
 	}
 	flush();
-	g->pop();
 }
 
 void SpineAnimator::addVertices(Texture* texture, float* vts, float* uvs, int first, int n, GLbyte r, GLbyte g, GLbyte b, GLbyte a)
@@ -385,9 +391,10 @@ void SpineAnimator::flush()
 void SpineAnimator::registerClassToLua(lua_State* L)
 {
 	luabridge::getGlobalNamespace(L)
-	.deriveClass<SpineAnimator, Renderer>("SpineAnimator")
-	.addStaticFunction("castFrom", &Component::castFrom<SpineAnimator>)
+	.beginClass<SpineAnimator>("SpineAnimator")
 	.addData("speedScale", &SpineAnimator::_speedScale)
+	.addFunction("draw", &SpineAnimator::draw)
+	.addFunction("update", &SpineAnimator::update)
 	.addFunction("setMix", &SpineAnimator::setMix)
 	.addFunction("setAnimation", &SpineAnimator::setAnimation)
 	.addFunction("addAnimation", &SpineAnimator::addAnimation)
