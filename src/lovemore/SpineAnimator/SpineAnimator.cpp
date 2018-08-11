@@ -15,9 +15,10 @@ using namespace love::filesystem;
 using namespace love::graphics;
 using namespace love::graphics::opengl;
 
-using namespace lovemore;
+using namespace lovemore; 
 
-using namespace glad;
+using namespace glad; 
+
 
 void _spAtlasPage_createTexture (spAtlasPage* self, const char* path)
 {

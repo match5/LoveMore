@@ -1,17 +1,17 @@
-#ifndef LOVEMORE_SPINE_ANIMATOR_H
-#define LOVEMORE_SPINE_ANIMATOR_H
+#ifndef LOVEMORE_SPINE_H
+#define LOVEMORE_SPINE_H
+
+#include "base/LuaObject.h"
 
 //SPINE
 #include <spine/spine.h>
 #include <spine/extension.h>
 
-//LOVE
+//LOVE 
+#include "modules/graphics/opengl/Graphics.h" 
 #include "modules/graphics/Texture.h"
 #include "modules/graphics/Quad.h"
 #include "common/Vector.h"
-
-//LOVEMORE
-#include "../Renderer.h"
 
 //C++
 #include <unordered_map>
@@ -24,7 +24,7 @@ namespace lovemore {
 	
 	using namespace glad;
 	
-	class SpineAnimator : public Renderer
+	class SpineAnimator : public LuaObject
 	{
 		enum {
 			K_MAX_TRIANGLES_NUM	= 256,
