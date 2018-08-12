@@ -850,10 +850,15 @@ set(LOVE_MORE_ROOT
 source_group("lovemore" FILES ${LOVE_MORE_ROOT})
 
 set(LOVE_MORE_BASE
-	src/lovemore/base/LuaObject.h
-	src/lovemore/base/GlGraphics.h
+	src/lovemore/base/def.h
 )
 source_group("lovemore\\base" FILES ${LOVE_MORE_BASE})
+
+set(LOVE_MORE_DRAWABLE_PROXY
+	src/lovemore/DrawableProxy/DrawableProxy.cpp
+	src/lovemore/DrawableProxy/DrawableProxy.h
+)
+source_group("lovemore\\DrawableProxy" FILES ${LOVE_MORE_DRAWABLE_PROXY})
 
 set(LOVE_MORE_SPINEANIMATOR
 	src/lovemore/SpineAnimator/SpineAnimator.cpp
@@ -1354,6 +1359,7 @@ set(LOVE_LIB_SRC
 	${LOVE_MORE_ROOT}
 	${LOVE_MORE_LUABRIDGE}
 	${LOVE_MORE_BASE}
+	${LOVE_MORE_DRAWABLE_PROXY}
 	${LOVE_MORE_SPINEANIMATOR}
 	${LOVE_MORE_SPINE_C_INCLUDE}
 	${LOVE_MORE_SPINE_C_SRC}

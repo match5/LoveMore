@@ -1,8 +1,8 @@
 #ifndef LOVEMORE_SPINE_ANIMATOR_H
 #define LOVEMORE_SPINE_ANIMATOR_H
 
-#include "base/LuaObject.h"
-#include "base/GlGraphics.h"
+//LOVE MORE
+#include "DrawableProxy/DrawableProxy.h"
 
 //SPINE
 #include <spine/spine.h>
@@ -11,12 +11,11 @@
 
 namespace lovemore {
 	
-	using namespace love;
 	using namespace love::graphics;
 	
 	using namespace glad;
 	
-	class SpineAnimator : public LuaObject
+	class SpineAnimator : public DrawableProxy
 	{
 		enum {
 			K_MAX_TRIANGLES_NUM	= 256,
@@ -45,11 +44,13 @@ namespace lovemore {
 		
 		virtual void update(float dt);
 		
-		virtual void draw(float x, float y, float angle, float sx, float sy, float ox, float oy);
+		virtual void draw(float x, float y, float angle, float sx, float sy, float ox, float oy, float kx, float ky) override;
 		
 		static void registerClassToLua(lua_State* L);
 		
 	protected:
+
+		virtual const char* name() override { return "lovemore.SpineAnimator";  };
 		
 		spSkeleton*			_skeleton = nullptr;
 		spAtlas*			_atlas = nullptr;

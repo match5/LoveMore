@@ -1,7 +1,4 @@
 
-//LoveMore
-#include "base/GlGraphics.h"
-
 #include "lovemore.h"
 #include "SpineAnimator.h"
 
@@ -230,10 +227,10 @@ void SpineAnimator::update(float dt)
 	spSkeleton_updateWorldTransform(_skeleton);
 }
 
-void SpineAnimator::draw(float x, float y, float angle, float sx, float sy, float ox, float oy)
+void SpineAnimator::draw(float x, float y, float angle, float sx, float sy, float ox, float oy, float kx, float ky)
 {
 	OpenGL::TempDebugGroup debuggroup("SpineAnimator draw");
-	Matrix4 t(x, y, angle, sx, sy, ox, oy, 0, 0);
+	Matrix4 t(x, y, angle, sx, sy, ox, oy, kx, ky);
 	
 	OpenGL::TempTransform transform(gl);
 	transform.get() *= t;
@@ -391,9 +388,8 @@ void SpineAnimator::flush()
 void SpineAnimator::registerClassToLua(lua_State* L)
 {
 	luabridge::getGlobalNamespace(L)
-	.beginClass<SpineAnimator>("SpineAnimator")
+	.deriveClass<SpineAnimator, DrawableProxy>("SpineAnimator")
 	.addData("speedScale", &SpineAnimator::_speedScale)
-	.addFunction("draw", &SpineAnimator::draw)
 	.addFunction("update", &SpineAnimator::update)
 	.addFunction("setMix", &SpineAnimator::setMix)
 	.addFunction("setAnimation", &SpineAnimator::setAnimation)

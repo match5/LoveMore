@@ -15,6 +15,7 @@ extern "C" {
 
 // LOVE MORE
 #include "lovemore.h"
+#include "DrawableProxy/DrawableProxy.h"
 #include "SpineAnimator/SpineAnimator.h"
 
 // C++
@@ -45,6 +46,7 @@ int luaopen_lovemore(lua_State *L)
 			.addCFunction("newSpineAnimator", lovemore_newSpineAnimator)
 		.endNamespace();
 	
+	DrawableProxy::registerClassToLua(L);
 	SpineAnimator::registerClassToLua(L);
 	
 	return 0;
