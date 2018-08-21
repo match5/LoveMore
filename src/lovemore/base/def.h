@@ -16,7 +16,21 @@ extern "C" {
 #include "modules/graphics/Graphics.h"
 #include "modules/graphics/Texture.h"
 #include "modules/graphics/Quad.h"
-#include "modules/graphics/opengl/Graphics.h" 
+#include "modules/graphics/opengl/Graphics.h"
+
+namespace luabridge
+{
+	template <class T>
+	struct ContainerTraits <love::StrongRef <T> >
+	{
+		typedef typename T Type;
+
+		static T* get (love::StrongRef <T> const& c)
+		{
+			return c.get ();
+		}
+	};
+}
 
 namespace lovemore {
 	typedef love::Object Object;

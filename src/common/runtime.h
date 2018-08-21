@@ -436,7 +436,8 @@ extern "C" { // Called by enet and luasocket
 template <typename T>
 T *luax_checktype(lua_State *L, int idx, love::Type type)
 {
-	if (lua_type(L, idx) != LUA_TUSERDATA)
+	int t = lua_type(L, idx);
+	if (t != LUA_TUSERDATA && t != LUA_TLIGHTUSERDATA)
 	{
 		const char *name = "Invalid";
 		getTypeName(type, name);

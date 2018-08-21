@@ -42,15 +42,13 @@ namespace lovemore {
 		
 		void onAnimationStateEvent (int trackIndex, spEventType type, spEvent* event, int loopCount);
 		
-		virtual void update(float dt);
+		void update(float dt);
 		
 		virtual void draw(float x, float y, float angle, float sx, float sy, float ox, float oy, float kx, float ky) override;
 		
 		static void registerClassToLua(lua_State* L);
 		
 	protected:
-
-		virtual const char* name() override { return "lovemore.SpineAnimator";  };
 		
 		spSkeleton*			_skeleton = nullptr;
 		spAtlas*			_atlas = nullptr;

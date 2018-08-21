@@ -32,8 +32,9 @@ int lovemore_newSpineAnimator(lua_State* L)
 {
 	const char* skeletonDataFile =  lua_tostring(L, 1);
 	const char* atlasFile =  lua_tostring(L, 2);
-	SpineAnimator* spine = new SpineAnimator(skeletonDataFile, atlasFile);
+	love::StrongRef<SpineAnimator> spine = new SpineAnimator(skeletonDataFile, atlasFile);
 	luabridge::push(L, spine);
+	spine->release();
 	return 1;
 }
 
@@ -42,9 +43,9 @@ int luaopen_lovemore(lua_State *L)
 	_L = L;
 	
 	luabridge::getGlobalNamespace(L)
-		.beginNamespace("lovemore")
-			.addCFunction("newSpineAnimator", lovemore_newSpineAnimator)
-		.endNamespace();
+	.beginNamespace("lovemore")
+	.addCFunction("newSpineAnimator", lovemore_newSpineAnimator)
+	.endNamespace();
 	
 	DrawableProxy::registerClassToLua(L);
 	SpineAnimator::registerClassToLua(L);

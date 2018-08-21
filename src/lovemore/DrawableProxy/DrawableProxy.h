@@ -11,6 +11,11 @@ namespace lovemore {
 	{
     public:
 
+        DrawableProxy() {
+            _proxy.type = love::Type::GRAPHICS_DRAWABLE_ID;
+	        _proxy.object = this;
+        }
+
 		virtual ~DrawableProxy() {};
 
 		int lua_get_proxy(lua_State* L);
@@ -18,8 +23,7 @@ namespace lovemore {
 		static void registerClassToLua(lua_State* L);
 
 	protected:
-
-		virtual const char* name() = 0;
+        love::Proxy _proxy;
     };
 
 }
